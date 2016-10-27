@@ -2,11 +2,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_swipe_test"
+    android:id="@+id/activity_swipe_stack_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e3e3e3"
-    tools:context="de.spitak.amazinggame.SwipeTestActivity"
+    tools:context="de.spitak.amazinggame.SwipeStackTestActivity"
     >
 
 </RelativeLayout>

@@ -14,24 +14,33 @@
 
     <Button
         android:id="@+id/swipeTest"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickSwipeTest"
         android:text="@string/button_swipe_test_start"
         />
 
     <Button
-        android:id="@+id/countdownTest"
-        android:layout_width="wrap_content"
+        android:id="@+id/swipeStackTest"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/swipeTest"
+        android:onClick="onClickSwipeStackTest"
+        android:text="@string/button_swipe_stack_test_start"
+        />
+
+    <Button
+        android:id="@+id/countdownTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/swipeStackTest"
         android:onClick="onClickCountdownTest"
         android:text="@string/button_countdown_test_start"
         />
 
     <Button
         android:id="@+id/shapeTest"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/countdownTest"
         android:onClick="onClickShapeTest"

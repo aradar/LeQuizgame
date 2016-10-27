@@ -29,4 +29,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClickCountdownTest(View view) {
         startActivity(CountdownTestActivity.class);
     }
+
+    public void onClickSwipeStackTest(View view) {
+        startActivity(SwipeStackTestActivity.class);
+    }
 }

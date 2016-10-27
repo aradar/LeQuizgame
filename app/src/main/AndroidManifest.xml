@@ -17,12 +17,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".SwipeTestActivity" android:theme="@style/NoBar">
-
+        <activity
+            android:name=".SwipeTestActivity"
+            android:theme="@style/NoBar"
+            >
         </activity>
-        <activity android:name=".ShapeTestActivity">
+        <activity
+            android:name=".ShapeTestActivity"
+            android:theme="@style/NoBar"
+            >
         </activity>
-        <activity android:name=".CountdownTestActivity">
+        <activity
+            android:name=".CountdownTestActivity"
+            android:theme="@style/NoBar"
+            >
+        </activity>
+        <activity
+            android:name=".SwipeStackTestActivity"
+            android:theme="@style/NoBar"
+            >
         </activity>
     </application>
 

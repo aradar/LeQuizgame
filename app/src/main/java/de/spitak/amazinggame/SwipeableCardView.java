@@ -24,7 +24,7 @@ public class SwipeableCardView extends CardView {
 
     {
         gestureDetector = new GestureDetector(getContext(), new SwipeGestureListener());
-        displayMetrics = getContext().getResources().getDisplayMetrics();
+        displayMetrics = Utils.getDisplayMetrics(getContext());
         swipeListeners = new ArrayList<>();
     }
 
@@ -84,14 +84,14 @@ public class SwipeableCardView extends CardView {
                 //right swipe
                 if (getX() > (displayMetrics.widthPixels * SWIPE_X_PERCENTAGE_NEEDED)) {
                     ignoreScrollEvent = true;
-                    animate().rotationBy(30).xBy(1000).start();
+                    animate().rotationBy(30).xBy(1000).yBy(300).start();
                     onSwipe(SwipeDirection.RIGHT);
                 }
                 //left swipe
                 else if (Math.abs(getX()) > (displayMetrics.widthPixels * SWIPE_X_PERCENTAGE_NEEDED)) {
                     ignoreScrollEvent = true;
                     onSwipe(SwipeDirection.LEFT);
-                    animate().rotationBy(-30).xBy(-1000).start();
+                    animate().rotationBy(-30).xBy(-1000).yBy(300).start();
                 }
                 //abort the ship
                 else {
