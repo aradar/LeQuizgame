@@ -1,9 +1,11 @@
-package de.spitak.amazinggame;
+package de.spitak.amazinggame.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import de.spitak.amazinggame.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,21 +15,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onClickSwipeTest(View view) {
-        startActivity(SwipeTestActivity.class);
-    }
 
     private void startActivity(Class type) {
         final Intent intent = new Intent(this, type);
         startActivity(intent);
     }
 
-    public void onClickShapeTest(View view) {
-        startActivity(ShapeTestActivity.class);
-    }
-
-    public void onClickCountdownTest(View view) {
-        startActivity(CountdownTestActivity.class);
+    public void onClickSwipeTest(View view) {
+        startActivity(SwipeTestActivity.class);
     }
 
     public void onClickSwipeStackTest(View view) {

@@ -1,4 +1,4 @@
-package de.spitak.amazinggame;
+package de.spitak.amazinggame.views;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.spitak.amazinggame.Utils;
 
 /**
  * Created by rschlett on 10/24/16.
@@ -119,5 +121,21 @@ public class SwipeableCardView extends CardView {
             return true;
         }
 
+    }
+
+    public interface OnSwipeListener {
+        void OnSwipeEvent(SwipeEvent swipeEvent);
+
+        class SwipeEvent {
+            private SwipeableCardView.SwipeDirection swipeDirection;
+
+            public SwipeEvent(SwipeableCardView.SwipeDirection swipeDirection) {
+                this.swipeDirection = swipeDirection;
+            }
+
+            public SwipeableCardView.SwipeDirection getSwipeDirection() {
+                return swipeDirection;
+            }
+        }
     }
 }

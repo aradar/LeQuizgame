@@ -1,4 +1,4 @@
-package de.spitak.amazinggame;
+package de.spitak.amazinggame.activities;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -6,8 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.widget.RelativeLayout;
+
+import de.spitak.amazinggame.R;
+import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.views.SwipeableCardView;
 
 public class SwipeTestActivity extends AppCompatActivity {
 
@@ -34,7 +37,7 @@ public class SwipeTestActivity extends AppCompatActivity {
         final int BOTTOM_MARGIN = Utils.dpToPx(displayMetrics, 120);
         layoutParams.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN, DEFAULT_MARGIN, BOTTOM_MARGIN);
         card.setLayoutParams(layoutParams);
-        card.setOnSwipeListener(new OnSwipeListener() {
+        card.setOnSwipeListener(new SwipeableCardView.OnSwipeListener() {
             @Override
             public void OnSwipeEvent(SwipeEvent swipeEvent) {
                 // TODO: 10/24/16 removeAllViews() seems to cancel all animations and just addView() does not show the new view
@@ -42,7 +45,7 @@ public class SwipeTestActivity extends AppCompatActivity {
                 SwipeableCardView card = getSwipeableCardView(layout);
                 card.setAlpha(0);
                 layout.addView(card);
-                card.animate().setStartDelay(1000).alpha(1).start();
+                card.animate().alpha(1).start();
             }
         });
         return card;

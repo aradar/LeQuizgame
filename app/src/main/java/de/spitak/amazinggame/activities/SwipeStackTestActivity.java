@@ -1,4 +1,4 @@
-package de.spitak.amazinggame;
+package de.spitak.amazinggame.activities;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
+
+import de.spitak.amazinggame.R;
+import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.views.SwipeableCardView;
 
 public class SwipeStackTestActivity extends AppCompatActivity {
 
@@ -44,10 +48,10 @@ public class SwipeStackTestActivity extends AppCompatActivity {
         // should be changed to be equal with 15dp
         layoutParams.setMargins(50, 50, 50, 300);
         card.setLayoutParams(layoutParams);
-        card.setOnSwipeListener(new OnSwipeListener() {
+        card.setOnSwipeListener(new SwipeableCardView.OnSwipeListener() {
             @Override
             public void OnSwipeEvent(SwipeEvent swipeEvent) {
-                // TODO: 10/24/16 create a new card on swipe
+
             }
         });
         return card;
