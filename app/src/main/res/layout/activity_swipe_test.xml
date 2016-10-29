@@ -9,4 +9,12 @@
     tools:context="de.spitak.amazinggame.activities.SwipeTestActivity"
     >
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickBackOption"
+        />
 </RelativeLayout>
+

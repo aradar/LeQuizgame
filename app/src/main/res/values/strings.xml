@@ -4,4 +4,5 @@
     <string name="button_countdown_test_start">Start Countdown Test</string>
     <string name="button_shape_test_start">Start Shape Test</string>
     <string name="button_swipe_stack_test_start">Start Swipe Stack Test</string>
+    <string name="button_stack_layout_test_start">Start Stack Layout Test</string>
 </resources>

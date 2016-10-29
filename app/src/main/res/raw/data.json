@@ -1,0 +1,34 @@
+{
+  "options": {
+    "0": {
+      "title": "Wohnzimmer",
+      "image": "res/wohnzimmer.png",
+      "description": "Ein ganz normales Wohnzimmer. Der Boden besteht aus quietschenden Dielen und es müffelt etwas. Was willst du tun?",
+      "hint": "Du befindest in einem verlassenen Wohnzimmer. Versuche zu entkommen!"
+    },
+    "1": {
+      "title": "kaputter Schrank",
+      "image": "res/kaputter_schrank.png",
+      "description": "Was ein abgeranztes Ding. Wackelt vorne und hinten. An dem Schrank haut garnichts hin. Es fehlen mehrere Zwischenböden.",
+      "hint": "umsehen"
+    },
+    "2": {
+      "title": "Tür",
+      "image": "res/tuer.png",
+      "description": "Die Tür um aus diesem Zimmer zu fliehen.",
+      "hint": "zur Tür"
+    },
+    "3": {
+      "title": "Truhe",
+      "image": "res/truhe.png",
+      "description": "Eine alte Piratentruhe. Und das in einem Wohnzimmer... Hm mein Geschmack ist das nicht wirklich.",
+      "hint": "umsehen"
+    },
+    "4": {
+      "title": "Darin lässt sich nichts finden...",
+      "image": "res/sackgasse.png",
+      "description": "nur alte Zeitschriften von vor 30 Jahren und Fussel.",
+      "hint": "durchstöbern"
+    }
+  }
+}

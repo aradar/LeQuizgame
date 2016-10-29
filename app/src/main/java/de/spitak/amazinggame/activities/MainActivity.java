@@ -1,8 +1,8 @@
 package de.spitak.amazinggame.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import de.spitak.amazinggame.R;
@@ -27,5 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickSwipeStackTest(View view) {
         startActivity(SwipeStackTestActivity.class);
+    }
+
+    public void onClickStackLayoutTest(View view) {
+        startActivity(StackLayoutTestActivity.class);
     }
 }

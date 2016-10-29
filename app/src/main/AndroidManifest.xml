@@ -23,19 +23,11 @@
             >
         </activity>
         <activity
-            android:name=".activities.ShapeTestActivity"
-            android:theme="@style/NoBar"
-            >
-        </activity>
-        <activity
-            android:name=".activities.CountdownTestActivity"
-            android:theme="@style/NoBar"
-            >
-        </activity>
-        <activity
             android:name=".activities.SwipeStackTestActivity"
             android:theme="@style/NoBar"
             >
+        </activity>
+        <activity android:name=".activities.StackLayoutTestActivity">
         </activity>
     </application>
 

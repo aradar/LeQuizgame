@@ -1,16 +1,16 @@
 package de.spitak.amazinggame.activities;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
 
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.Utils;
-import de.spitak.amazinggame.views.SwipeableCardView;
+import de.spitak.amazinggame.view.SwipeableCardView;
 
 public class SwipeStackTestActivity extends AppCompatActivity {
 

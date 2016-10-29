@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.views;
+package de.spitak.amazinggame.view;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -107,22 +107,6 @@ public class SwipeableCardView extends CardView {
         LEFT, RIGHT
     }
 
-    private class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            handleScroll(e1, e2);
-
-            return true;
-        }
-
-    }
-
     public interface OnSwipeListener {
         void OnSwipeEvent(SwipeEvent swipeEvent);
 
@@ -137,5 +121,21 @@ public class SwipeableCardView extends CardView {
                 return swipeDirection;
             }
         }
+    }
+
+    private class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            handleScroll(e1, e2);
+
+            return true;
+        }
+
     }
 }
