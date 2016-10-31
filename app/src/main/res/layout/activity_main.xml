@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="de.spitak.amazinggame.activity.MainActivity"
+    tools:context="de.spitak.amazinggame.activity.MenuActivity"
     >
 
     <Button
         android:id="@+id/swipeTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickSwipeTest"
+        android:onClick="onClickGameStart"
         android:text="@string/button_swipe_test_start"
         />
 

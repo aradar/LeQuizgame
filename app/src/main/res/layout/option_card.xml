@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
-            name="OptionViewModel"
+            name="option"
             type="de.spitak.amazinggame.viewmodel.OptionViewModel"
             />
     </data>
 
     <de.spitak.amazinggame.view.SwipeableCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="120dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -29,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center_horizontal"
-                android:text="@{OptionViewModel.title}"
+                android:text="@{option.title}"
                 />
 
             <ImageView
@@ -48,7 +50,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:text="@{OptionViewModel.description}"
+                android:text="@{option.description}"
                 />
 
             <LinearLayout
@@ -64,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left|center_vertical"
-                    android:text="@{OptionViewModel.leftHint}"
+                    android:text="@{option.leftHint}"
                     />
 
                 <TextView
@@ -73,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
-                    android:text="@{OptionViewModel.rightHint}"
+                    android:text="@{option.rightHint}"
                     />
             </LinearLayout>
         </LinearLayout>

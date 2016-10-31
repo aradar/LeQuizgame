@@ -8,6 +8,10 @@ public class Game {
     private Option currentOption;
     private Inventory inventory;
 
+    public Game() {
+        createTestOption();
+    }
+
     public void takeLeftOption() {
         currentOption = currentOption.getLeft();
     }
@@ -22,7 +26,7 @@ public class Game {
         return currentOption;
     }
 
-    public void createTestOption() {
+    private void createTestOption() {
         currentOption = new Option("Test", "Test 2000", "");
 
         currentOption.setLeft(new Option("Kuh",

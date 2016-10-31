@@ -7,7 +7,7 @@ import android.view.View;
 
 import de.spitak.amazinggame.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickSwipeTest(View view) {
+    public void onClickGameStart(View view)
+    {
         startActivity(GameActivity.class);
     }
 

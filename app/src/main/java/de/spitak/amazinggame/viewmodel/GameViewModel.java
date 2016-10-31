@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import de.spitak.amazinggame.R;
@@ -20,17 +21,14 @@ import de.spitak.amazinggame.view.SwipeableCardView;
 
 public class GameViewModel extends BaseObservable {
     private Game game;
-    private Context context;
-    private RelativeLayout layout;
 
-    public GameViewModel(Context context, RelativeLayout layout, Game game) {
-        this.context = context;
+
+    public GameViewModel(Game game) {
         this.game = game;
-        this.layout = layout;
     }
 
-    public Option getCurrentOption() {
-        return game.getCurrentOption();
+    public OptionViewModel getCurrentOption() {
+        return new OptionViewModel(game.getCurrentOption());
     }
 
     public SwipeableCardView.OnSwipeListener onSwipe() {
@@ -39,35 +37,20 @@ public class GameViewModel extends BaseObservable {
             public void OnSwipeEvent(SwipeEvent swipeEvent) {
                 if (swipeEvent.getSwipeDirection().equals(SwipeableCardView.SwipeDirection.LEFT)) {
                     game.takeLeftOption();
-                    createNewCard();
+                    // trigger createNewCard
                 } else if (swipeEvent.getSwipeDirection()
                         .equals(SwipeableCardView.SwipeDirection.RIGHT)) {
                     game.takeRightOption();
-                    createNewCard();
+                    // trigger createNewCard
                 }
             }
         };
     }
 
-    public void createNewCard() {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        OptionCardBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.option_card,
-                null,
-                false);
-        binding.setOptionViewModel(new OptionViewModel(getCurrentOption())); // should be automatically generated from the game?!
-        SwipeableCardView card = (SwipeableCardView) binding.getRoot();
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        DisplayMetrics displayMetrics = Display.getDisplayMetrics(context);
-        final int DEFAULT_MARGIN = Display.dpToPx(displayMetrics, 15);
-        final int BOTTOM_MARGIN = Display.dpToPx(displayMetrics, 120);
-        layoutParams.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN, DEFAULT_MARGIN, BOTTOM_MARGIN);
-        card.setLayoutParams(layoutParams);
-        card.setOnSwipeListener(onSwipe());
-
-        layout.removeAllViews();
-        layout.addView(card);
+    public void onBackClick (View v) {
+        if (!game.getCurrentOption().isRoot()) {
+            game.takeParentOption();
+            // trigger createNewCard
+        }
     }
-
 }
