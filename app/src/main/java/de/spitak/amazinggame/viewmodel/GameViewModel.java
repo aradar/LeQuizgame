@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import de.spitak.amazinggame.R;
-import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.util.Display;
 import de.spitak.amazinggame.databinding.OptionCardBinding;
 import de.spitak.amazinggame.model.Game;
 import de.spitak.amazinggame.model.Option;
@@ -59,9 +59,9 @@ public class GameViewModel extends BaseObservable {
         SwipeableCardView card = (SwipeableCardView) binding.getRoot();
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
-        DisplayMetrics displayMetrics = Utils.getDisplayMetrics(context);
-        final int DEFAULT_MARGIN = Utils.dpToPx(displayMetrics, 15);
-        final int BOTTOM_MARGIN = Utils.dpToPx(displayMetrics, 120);
+        DisplayMetrics displayMetrics = Display.getDisplayMetrics(context);
+        final int DEFAULT_MARGIN = Display.dpToPx(displayMetrics, 15);
+        final int BOTTOM_MARGIN = Display.dpToPx(displayMetrics, 120);
         layoutParams.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN, DEFAULT_MARGIN, BOTTOM_MARGIN);
         card.setLayoutParams(layoutParams);
         card.setOnSwipeListener(onSwipe());

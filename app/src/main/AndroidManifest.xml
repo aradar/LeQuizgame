@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -18,16 +18,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SwipeTestActivity"
+            android:name=".activity.GameActivity"
             android:theme="@style/NoBar"
             >
         </activity>
         <activity
-            android:name=".activities.SwipeStackTestActivity"
+            android:name=".activity.SwipeStackTestActivity"
             android:theme="@style/NoBar"
             >
         </activity>
-        <activity android:name=".activities.StackLayoutTestActivity">
+        <activity android:name=".activity.StackLayoutTestActivity">
         </activity>
     </application>
 

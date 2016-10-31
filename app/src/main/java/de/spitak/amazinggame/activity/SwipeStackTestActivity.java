@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.activities;
+package de.spitak.amazinggame.activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
 
 import de.spitak.amazinggame.R;
-import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.util.Display;
 import de.spitak.amazinggame.view.SwipeableCardView;
 
 public class SwipeStackTestActivity extends AppCompatActivity {
@@ -22,9 +22,9 @@ public class SwipeStackTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_stack_test);
 
-        DisplayMetrics displayMetrics = Utils.getDisplayMetrics(this);
-        final int Z_DIFFERENCE = Utils.dpToPx(displayMetrics, 5);
-        final int Y_DIFFERENCE = Utils.dpToPx(displayMetrics, 5);
+        DisplayMetrics displayMetrics = Display.getDisplayMetrics(this);
+        final int Z_DIFFERENCE = Display.dpToPx(displayMetrics, 5);
+        final int Y_DIFFERENCE = Display.dpToPx(displayMetrics, 5);
 
         layout = (RelativeLayout) findViewById(R.id.activity_swipe_stack_test);
         SwipeableCardView card = getSwipeableCardView(layout);

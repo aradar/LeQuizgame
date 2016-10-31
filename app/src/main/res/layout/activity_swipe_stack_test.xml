@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e3e3e3"
-    tools:context="de.spitak.amazinggame.activities.SwipeStackTestActivity"
+    tools:context="de.spitak.amazinggame.activity.SwipeStackTestActivity"
     >
 
 </RelativeLayout>

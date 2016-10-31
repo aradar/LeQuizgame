@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.util.Display;
 
 /**
  * Created by rschlett on 10/24/16.
@@ -26,7 +26,7 @@ public class SwipeableCardView extends CardView {
 
     {
         gestureDetector = new GestureDetector(getContext(), new SwipeGestureListener());
-        displayMetrics = Utils.getDisplayMetrics(getContext());
+        displayMetrics = Display.getDisplayMetrics(getContext());
         swipeListeners = new ArrayList<>();
     }
 

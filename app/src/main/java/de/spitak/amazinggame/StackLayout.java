@@ -4,10 +4,11 @@ import android.content.Context;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import de.spitak.amazinggame.util.Display;
 
 /**
  * Created by rschlett on 10/25/16.
@@ -37,7 +38,7 @@ public class StackLayout extends ViewGroup {
     }
 
     private void init(Context context) {
-        final Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        final android.view.Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point deviceDisplay = new Point();
         display.getSize(deviceDisplay);
         deviceWidth = deviceDisplay.x;
@@ -50,9 +51,9 @@ public class StackLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final DisplayMetrics displayMetrics = Utils.getDisplayMetrics(getContext());
+        final DisplayMetrics displayMetrics = Display.getDisplayMetrics(getContext());
         final int Z_DIFF = 50;
-        final int Y_DIFF = Utils.dpToPx(displayMetrics, 10);
+        final int Y_DIFF = Display.dpToPx(displayMetrics, 10);
         final int CHILD_COUNT = getChildCount();
 
         for (int i = 0, j = CHILD_COUNT; i < CHILD_COUNT; i++, j--) {

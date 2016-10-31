@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.activities;
+package de.spitak.amazinggame.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

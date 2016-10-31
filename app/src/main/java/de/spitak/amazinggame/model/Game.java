@@ -16,6 +16,8 @@ public class Game {
         currentOption = currentOption.getRight();
     }
 
+    public void takeParentOption() { currentOption = currentOption.getParent(); }
+
     public Option getCurrentOption() {
         return currentOption;
     }

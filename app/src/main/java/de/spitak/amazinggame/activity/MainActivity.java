@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.activities;
+package de.spitak.amazinggame.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickSwipeTest(View view) {
-        startActivity(SwipeTestActivity.class);
+        startActivity(GameActivity.class);
     }
 
     public void onClickSwipeStackTest(View view) {

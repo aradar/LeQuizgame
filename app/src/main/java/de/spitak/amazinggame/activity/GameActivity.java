@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.activities;
+package de.spitak.amazinggame.activity;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -13,14 +13,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import de.spitak.amazinggame.R;
-import de.spitak.amazinggame.Utils;
+import de.spitak.amazinggame.util.Display;
 import de.spitak.amazinggame.databinding.OptionCardBinding;
 import de.spitak.amazinggame.model.Game;
 import de.spitak.amazinggame.view.SwipeableCardView;
 import de.spitak.amazinggame.viewmodel.GameViewModel;
 import de.spitak.amazinggame.viewmodel.OptionViewModel;
 
-public class SwipeTestActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     private RelativeLayout layout;
     private GameViewModel gameViewModel;
@@ -29,7 +29,7 @@ public class SwipeTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipe_test);
+        setContentView(R.layout.activity_game);
 
         layout = (RelativeLayout) findViewById(R.id.activity_swipe_test);
         gameViewModel = new GameViewModel(this, layout, generateGame());
@@ -60,9 +60,9 @@ public class SwipeTestActivity extends AppCompatActivity {
         //SwipeableCardView card = (SwipeableCardView) inflater.inflate(R.layout.option_card, null);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
-        DisplayMetrics displayMetrics = Utils.getDisplayMetrics(this);
-        final int DEFAULT_MARGIN = Utils.dpToPx(displayMetrics, 15);
-        final int BOTTOM_MARGIN = Utils.dpToPx(displayMetrics, 120);
+        DisplayMetrics displayMetrics = Display.getDisplayMetrics(this);
+        final int DEFAULT_MARGIN = Display.dpToPx(displayMetrics, 15);
+        final int BOTTOM_MARGIN = Display.dpToPx(displayMetrics, 120);
         layoutParams.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN, DEFAULT_MARGIN, BOTTOM_MARGIN);
         card.setLayoutParams(layoutParams);
         card.setOnSwipeListener(gameViewModel.onSwipe());
@@ -101,9 +101,9 @@ public class SwipeTestActivity extends AppCompatActivity {
         /*SwipeableCardView card = new SwipeableCardView(layout.getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
-        DisplayMetrics displayMetrics = Utils.getDisplayMetrics(this);
-        final int DEFAULT_MARGIN = Utils.dpToPx(displayMetrics, 15);
-        final int BOTTOM_MARGIN = Utils.dpToPx(displayMetrics, 120);
+        DisplayMetrics displayMetrics = Display.getDisplayMetrics(this);
+        final int DEFAULT_MARGIN = Display.dpToPx(displayMetrics, 15);
+        final int BOTTOM_MARGIN = Display.dpToPx(displayMetrics, 120);
         layoutParams.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN, DEFAULT_MARGIN, BOTTOM_MARGIN);
         card.setLayoutParams(layoutParams);
         card.setOnSwipeListener(new SwipeableCardView.OnSwipeListener() {
