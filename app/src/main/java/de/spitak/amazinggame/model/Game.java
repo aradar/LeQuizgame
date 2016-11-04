@@ -13,11 +13,15 @@ public class Game {
     }
 
     public void takeLeftOption() {
-        currentOption = currentOption.getLeft();
+        if (currentOption.getLeft() != null) {
+            currentOption = currentOption.getLeft();
+        }
     }
 
     public void takeRightOption() {
-        currentOption = currentOption.getRight();
+        if (currentOption.getRight() != null) {
+            currentOption = currentOption.getRight();
+        }
     }
 
     public void takeParentOption() { currentOption = currentOption.getParent(); }

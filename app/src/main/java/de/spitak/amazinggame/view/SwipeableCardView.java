@@ -4,30 +4,24 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.spitak.amazinggame.util.Display;
+import de.spitak.amazinggame.util.SwipeAnimationHelper;
+import de.spitak.amazinggame.util.SwipeDetector;
 
 /**
  * Created by rschlett on 10/24/16.
  */
 
 public class SwipeableCardView extends CardView {
-    private final GestureDetector gestureDetector;
     private final DisplayMetrics displayMetrics;
-    private final float SWIPE_X_PERCENTAGE_NEEDED = 1 / 3f;
-    private float lastCardX = 0;
-    private boolean ignoreScrollEvent;
-    private List<OnSwipeListener> swipeListeners;
+    private SwipeDetector swipeDetector;
+    private SwipeAnimationHelper animationHelper;
+    private OnSwipeListener onSwipeListener;
 
     {
-        gestureDetector = new GestureDetector(getContext(), new SwipeGestureListener());
         displayMetrics = Display.getDisplayMetrics(getContext());
-        swipeListeners = new ArrayList<>();
     }
 
     public SwipeableCardView(Context context) {
@@ -42,100 +36,78 @@ public class SwipeableCardView extends CardView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void start() {
-        //// TODO: 10/24/16 implement activation functionality
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (swipeDetector == null) {
+            swipeDetector = new SwipeDetector(getContext(), left, top);
+            swipeDetector.setOnSwipeListener(new SwipeListener());
+        }
+        if (animationHelper == null) {
+            animationHelper = new SwipeAnimationHelper(this, left, top);
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            handleScroll(event, null);
+        if (swipeDetector != null) {
+            return swipeDetector.onTouchEvent(event);
         }
 
-        return gestureDetector.onTouchEvent(event);
+        return false;
     }
 
     public void setOnSwipeListener(OnSwipeListener l) {
-        swipeListeners.add(l);
-    }
-
-    private void onSwipe(SwipeDirection direction) {
-        for (OnSwipeListener listener : swipeListeners) {
-            listener.OnSwipeEvent(new OnSwipeListener.SwipeEvent(direction));
-        }
-    }
-
-    private void handleScroll(MotionEvent e1, MotionEvent e2) {
-        //DEBUG System.out.println("x: " + getX() + "1/3 Display " + (displayMetrics.widthPixels * 0.3));
-
-        if (!ignoreScrollEvent) {
-            if (e1.getAction() == MotionEvent.ACTION_DOWN) {
-                SwipeableCardView.this.setX(e2.getRawX() - e1.getRawX() - lastCardX);
-            }
-
-            if (e2 != null) {
-                if (e2.getAction() == MotionEvent.ACTION_MOVE) {
-                    SwipeableCardView.this.setX(e2.getRawX() - e1.getRawX());
-                    lastCardX = SwipeableCardView.this.getX();
-                }
-            }
-
-            if (e1.getAction() == MotionEvent.ACTION_UP) {
-                float offset = displayMetrics.widthPixels / 2f - getWidth() / 2f;
-
-                //right swipe
-                if (getX() > (displayMetrics.widthPixels * SWIPE_X_PERCENTAGE_NEEDED)) {
-                    ignoreScrollEvent = true;
-                    animate().rotationBy(30).xBy(1000).yBy(300).start();
-                    onSwipe(SwipeDirection.RIGHT);
-                }
-                //left swipe
-                else if (Math.abs(getX()) > (displayMetrics.widthPixels * SWIPE_X_PERCENTAGE_NEEDED)) {
-                    ignoreScrollEvent = true;
-                    onSwipe(SwipeDirection.LEFT);
-                    animate().rotationBy(-30).xBy(-1000).yBy(300).start();
-                }
-                //abort the ship
-                else {
-                    animate().x(offset).rotation(0).start();
-                }
-            }
-        }
-    }
-
-    public enum SwipeDirection {
-        LEFT, RIGHT
+        this.onSwipeListener = l;
     }
 
     public interface OnSwipeListener {
-        void OnSwipeEvent(SwipeEvent swipeEvent);
 
+        void onSwipe(SwipeEvent swipeEvent);
         class SwipeEvent {
-            private SwipeableCardView.SwipeDirection swipeDirection;
 
-            public SwipeEvent(SwipeableCardView.SwipeDirection swipeDirection) {
+            private SwipeDetector.SwipeDirection swipeDirection;
+
+            public SwipeEvent(SwipeDetector.SwipeDirection swipeDirection) {
                 this.swipeDirection = swipeDirection;
             }
 
-            public SwipeableCardView.SwipeDirection getSwipeDirection() {
+            public SwipeDetector.SwipeDirection getSwipeDirection() {
                 return swipeDirection;
             }
+
         }
     }
 
-    private class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private class SwipeListener implements SwipeDetector.OnSwipeListener {
 
         @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
+        public void onSwipe(final SwipeEvent swipeEvent) {
+            if (swipeEvent.getSwipeDirection() != SwipeDetector.SwipeDirection.NONE) {
+                animationHelper.swipeOut(swipeEvent.getSwipeDirection(), new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeDetector.resetCoordinates();
+                        onSwipeListener.onSwipe(new OnSwipeListener.SwipeEvent(swipeEvent.getSwipeDirection()));
+                        animationHelper.bottomSwipeIn(null);
+                    }
+                });
+            } else {
+                swipeDetector.resetCoordinates();
+                animationHelper.resetToCenter(null);
+            }
         }
 
         @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            handleScroll(e1, e2);
-
-            return true;
+        public void onSwipePossible(SwipeEvent swipeEvent) {
         }
 
+        @Override
+        public void onPositionUpdate(float rawX, float rawY) {
+            setX(rawX);
+            setY(rawY);
+        }
     }
+
 }

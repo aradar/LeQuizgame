@@ -22,13 +22,6 @@
             android:theme="@style/NoBar"
             >
         </activity>
-        <activity
-            android:name=".activity.SwipeStackTestActivity"
-            android:theme="@style/NoBar"
-            >
-        </activity>
-        <activity android:name=".activity.StackLayoutTestActivity">
-        </activity>
     </application>
 
 </manifest>

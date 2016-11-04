@@ -32,19 +32,4 @@
         android:text="@string/button_stack_layout_test_start"
         />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Test"
-            />
-    </android.support.v7.widget.CardView>
-
 </LinearLayout>
