@@ -15,7 +15,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-
     private void startActivity(Class type) {
         final Intent intent = new Intent(this, type);
         startActivity(intent);
@@ -24,13 +23,5 @@ public class MenuActivity extends AppCompatActivity {
     public void onClickGameStart(View view)
     {
         startActivity(GameActivity.class);
-    }
-
-    public void onClickSwipeStackTest(View view) {
-        startActivity(SwipeStackTestActivity.class);
-    }
-
-    public void onClickStackLayoutTest(View view) {
-        startActivity(StackLayoutTestActivity.class);
     }
 }
