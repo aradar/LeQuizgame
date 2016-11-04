@@ -9,13 +9,86 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#e3e3e3"
         tools:context="de.spitak.amazinggame.activity.GameActivity">
+
+        <de.spitak.amazinggame.view.SwipeableCardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/activity_game_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/room_card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{game.currentOptionViewModel.title}"
+                    />
+
+                <ImageView
+                    android:id="@+id/room_card_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    />
+                <!--android:src="@{option.image}"-->
+
+                <TextView
+                    android:id="@+id/room_card_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{game.currentOptionViewModel.description}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+
+                    <TextView
+                        android:id="@+id/room_card_lefthint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:text="@{game.currentOptionViewModel.leftHint}"
+                        />
+
+                    <TextView
+                        android:id="@+id/room_card_righthint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:text="@{game.currentOptionViewModel.rightHint}"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </de.spitak.amazinggame.view.SwipeableCardView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/back_button"
@@ -24,8 +97,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginBottom="20dp"
-            app:fabSize="normal"
             android:onClick="@{game::onBackClick}"
+            app:fabSize="normal"
             />
     </RelativeLayout>
 </layout>
