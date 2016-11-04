@@ -1,8 +1,4 @@
 <resources>
     <string name="app_name">Le Quizgame</string>
-    <string name="button_swipe_test_start">Start Swipe Test</string>
-    <string name="button_countdown_test_start">Start Countdown Test</string>
-    <string name="button_shape_test_start">Start Shape Test</string>
-    <string name="button_swipe_stack_test_start">Start Swipe Stack Test</string>
-    <string name="button_stack_layout_test_start">Start Stack Layout Test</string>
+    <string name="button_game_test_start">Start Game Test</string>
 </resources>
