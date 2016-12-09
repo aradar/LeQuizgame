@@ -1,7 +1,6 @@
 package de.spitak.amazinggame.viewmodel;
 
 import android.databinding.BaseObservable;
-import android.graphics.drawable.BitmapDrawable;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class OptionViewModel extends BaseObservable {
         return option.getDrops();
     }
 
-    public BitmapDrawable getImage() {
+    public String getImage() {
         return option.getImage();
     }
 

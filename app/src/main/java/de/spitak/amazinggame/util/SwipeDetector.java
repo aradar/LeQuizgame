@@ -130,6 +130,8 @@ public class SwipeDetector {
             }
         }
 */
+        SwipeDirection direction;
+
         final float PERCENTAGE_NEEDED = 1 / 3f;
         final float X_THRESHOLD = displayMetrics.widthPixels * PERCENTAGE_NEEDED;
         final float Y_THRESHOLD = displayMetrics.heightPixels * PERCENTAGE_NEEDED;

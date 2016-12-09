@@ -5,4 +5,25 @@ package de.spitak.amazinggame.model;
  */
 
 public class Item {
+
+    private int id;
+    private String name;
+    private String description;
+    private String image;
+    private String smallImage;
+
+    public Item(String name, String description, String image, String smallImage) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.smallImage = smallImage;
+    }
+
+    public Item(int id, String name, String description, String image, String smallImage) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.smallImage = smallImage;
+    }
 }

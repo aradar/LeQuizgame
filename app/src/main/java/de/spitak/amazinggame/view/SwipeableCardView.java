@@ -5,7 +5,9 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 
+import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.util.Display;
 import de.spitak.amazinggame.util.SwipeAnimationHelper;
 import de.spitak.amazinggame.util.SwipeDetector;
@@ -91,8 +93,14 @@ public class SwipeableCardView extends CardView {
                         swipeDetector.resetCoordinates();
                         onSwipeListener.onSwipe(new OnSwipeListener.SwipeEvent(swipeEvent.getSwipeDirection()));
                         animationHelper.bottomSwipeIn(null);
+                        // temp
+                        ImageView imageView = (ImageView) findViewById(R.id.room_card_image);
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1));
+                        // temp
+
                     }
                 });
+
             } else {
                 swipeDetector.resetCoordinates();
                 animationHelper.resetToCenter(null);
@@ -101,6 +109,14 @@ public class SwipeableCardView extends CardView {
 
         @Override
         public void onSwipePossible(SwipeEvent swipeEvent) {
+            // temp
+            ImageView imageView = (ImageView) findViewById(R.id.room_card_image);
+            if (swipeEvent.getSwipeDirection() != SwipeDetector.SwipeDirection.NONE) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1_open));
+            } else {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1));
+            }
+            // temp
         }
 
         @Override

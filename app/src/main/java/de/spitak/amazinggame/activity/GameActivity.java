@@ -20,7 +20,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game);
 
-        gameViewModel = new GameViewModel(new Game());
+        gameViewModel = new GameViewModel(new Game(0, "Hallo", "Welt", "Image"));
         activityGameBinding.setGame(gameViewModel);
 
         final SwipeableCardView card = (SwipeableCardView) findViewById(R.id.activity_game_card);
