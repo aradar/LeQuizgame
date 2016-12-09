@@ -3,6 +3,7 @@ package de.spitak.amazinggame.db;
 import android.content.Context;
 import android.database.Cursor;
 
+import de.spitak.amazinggame.db.base.BaseDataSource;
 import de.spitak.amazinggame.model.Option;
 
 /**

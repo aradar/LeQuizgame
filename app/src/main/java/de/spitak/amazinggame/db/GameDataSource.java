@@ -4,14 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import de.spitak.amazinggame.db.base.BaseDataSource;
 import de.spitak.amazinggame.model.Game;
 
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns.COLUMNS;
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns.DESCRIPTION;
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns.IMAGE;
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns.NAME;
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns.TABLE_NAME;
-import static de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper.GameColumns._ID;
+import static de.spitak.amazinggame.db.table.GameTable.GameTableColumns.*;
 
 /**
  * Created by rschlett on 12/1/16.
@@ -27,7 +23,7 @@ public class GameDataSource extends BaseDataSource<Game> {
     public Game getData(int id) {
         Cursor cursor = db.query(
                 TABLE_NAME,
-                COLUMNS,
+                COLUMN_NAMES,
                 _ID + "=" + id,
                 null,
                 null, null, null);
@@ -73,7 +69,7 @@ public class GameDataSource extends BaseDataSource<Game> {
 
     @Override
     protected String[] getColumnNames() {
-        return COLUMNS;
+        return COLUMN_NAMES;
     }
 
     @Override

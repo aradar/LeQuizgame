@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.db;
+package de.spitak.amazinggame.db.base;
 
 import android.provider.BaseColumns;
 

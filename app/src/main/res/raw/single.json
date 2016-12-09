@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Wohnzimmer",
+    "description": "Ein ganz normales Wohnzimmer. Der Boden besteht aus quietschenden Dielen und es müffelt etwas. Was willst du tun?",
+    "hint": "Du befindest in einem verlassenen Wohnzimmer. Versuche zu entkommen!",
+    "image":null,
+    "parent":null,
+    "drops":null,
+    "requirements":null,
+    "completed": false
+  },
+  {
+  "title": "Wohnzimmer",
+  "description": "Ein ganz normales Wohnzimmer. Der Boden besteht aus quietschenden Dielen und es müffelt etwas. Was willst du tun?",
+  "hint": "Du befindest in einem verlassenen Wohnzimmer. Versuche zu entkommen!",
+  "image":null,
+  "parent":null,
+  "drops":null,
+  "requirements":null,
+  "completed": false
+  },
+  null,
+  {
+
+  }
+
+]

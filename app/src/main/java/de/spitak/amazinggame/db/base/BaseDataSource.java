@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.db;
+package de.spitak.amazinggame.db.base;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper;
 
 /**
  * Created by rschlett on 12/1/16.

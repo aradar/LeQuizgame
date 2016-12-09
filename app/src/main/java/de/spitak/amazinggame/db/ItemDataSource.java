@@ -3,17 +3,17 @@ package de.spitak.amazinggame.db;
 import android.content.Context;
 import android.database.Cursor;
 
+import de.spitak.amazinggame.db.base.BaseDataSource;
+import de.spitak.amazinggame.db.table.ItemTable;
 import de.spitak.amazinggame.model.Item;
+
+import static de.spitak.amazinggame.db.table.ItemTable.*;
 
 /**
  * Created by rschlett on 12/1/16.
  */
 
 public class ItemDataSource extends BaseDataSource<Item> {
-
-    private static final String TABLE_NAME = "Item";
-    private static final String[] COLUMN_NAMES = {"_id", "name", "description",
-            "image", "smallImage"};
 
     public ItemDataSource(Context context) {
         super(context);
@@ -36,12 +36,12 @@ public class ItemDataSource extends BaseDataSource<Item> {
 
     @Override
     protected String getTableName() {
-        return TABLE_NAME;
+        return ItemTableColumns.TABLE_NAME;
     }
 
     @Override
     protected String[] getColumnNames() {
-        return COLUMN_NAMES;
+        return ItemTableColumns.COLUMN_NAMES;
     }
 
     @Override
