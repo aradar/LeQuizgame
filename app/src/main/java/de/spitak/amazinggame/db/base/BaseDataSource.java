@@ -52,6 +52,10 @@ public abstract class BaseDataSource<T> {
         return allData;
     }
 
+    public void deleteAllData() {
+        dbHelper.onUpgrade(db,0,0);
+    }
+
     public abstract T getData(int id);
 
     public abstract T createData(T data);

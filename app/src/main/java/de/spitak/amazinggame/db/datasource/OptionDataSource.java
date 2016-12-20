@@ -99,14 +99,15 @@ public class OptionDataSource extends BaseDataSource<Option> {
     protected Option cursorToData(Cursor cursor) {
         return new Option(
                 cursor.getInt(0), // _ID
-                cursor.getString(1), // TITLE
-                cursor.getString(2), // DESCRIPTION
-                cursor.getString(3), // HINT
-                cursor.getString(4), // IMAGE
-                cursor.getInt(5), // PARENT_ID
-                cursor.getInt(6), // LEFT_CHILD_ID
-                cursor.getInt(7), // RIGHT_CHILD_ID
+                cursor.getInt(1), // GAME_ID
+                cursor.getString(2), // TITLE
+                cursor.getString(3), // DESCRIPTION
+                cursor.getString(4), // HINT
+                cursor.getString(5), // IMAGE
+                cursor.getInt(6), // PARENT_ID
+                cursor.getInt(7), // LEFT_CHILD_ID
+                cursor.getInt(8), // RIGHT_CHILD_ID
                 cursor.getInt(9) == 1, // BACKSTEP_BLOCKED
-                cursor.getInt(9) == 1); // COMPLETED
+                cursor.getInt(10) == 1); // COMPLETED
     }
 }

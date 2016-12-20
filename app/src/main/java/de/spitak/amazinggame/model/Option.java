@@ -11,6 +11,7 @@ import java.util.List;
 public class Option {
 
     private int id;
+    private int gameId;
     private String title;
     private String description;
     private String hint;
@@ -40,21 +41,6 @@ public class Option {
         this.completed = completed;
     }
 
-    public Option(int id, String title, String description, String hint, String image,
-                  int parentId, int leftChildId, int rightChildId, boolean backstepBlocked,
-                  boolean completed) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.hint = hint;
-        this.image = image;
-        this.parentId = parentId;
-        this.leftChildId = leftChildId;
-        this.rightChildId = rightChildId;
-        this.backstepBlocked = backstepBlocked;
-        this.completed = completed;
-    }
-
     public Option(String title, String description, String hint,
                   String image, Option parent, List<Item> drops,
                   List<Item> requirements) {
@@ -66,6 +52,37 @@ public class Option {
         this.drops = drops;
         this.requirements = requirements;
         this.completed = false;
+    }
+
+    public Option(int id, int gameId, String title, String description, String hint,
+                  String image, int parentId, int leftChildId, int rightChildId,
+                  boolean backstepBlocked, boolean completed) {
+        this.id = id;
+        this.gameId = gameId;
+        this.title = title;
+        this.description = description;
+        this.hint = hint;
+        this.image = image;
+        this.parentId = parentId;
+        this.leftChildId = leftChildId;
+        this.rightChildId = rightChildId;
+        this.backstepBlocked = backstepBlocked;
+        this.completed = completed;
+    }
+
+    public Option(int gameId, String title, String description, String hint,
+                  String image, int parentId, int leftChildId, int rightChildId,
+                  boolean backstepBlocked, boolean completed) {
+        this.gameId = gameId;
+        this.title = title;
+        this.description = description;
+        this.hint = hint;
+        this.image = image;
+        this.parentId = parentId;
+        this.leftChildId = leftChildId;
+        this.rightChildId = rightChildId;
+        this.backstepBlocked = backstepBlocked;
+        this.completed = completed;
     }
 
     public Option(String title, String description, String hint) {
