@@ -18,7 +18,7 @@ public class Option {
     private Option parent;
     private Option left;
     private Option right;
-    private int parentChildId;
+    private int parentId;
     private int leftChildId;
     private int rightChildId;
     private List<Item> drops;
@@ -27,13 +27,13 @@ public class Option {
     private boolean completed;
 
     public Option(String title, String description, String hint,
-                  String image, int parentChildId, int leftChildId, int rightChildId,
+                  String image, int parentId, int leftChildId, int rightChildId,
                   boolean backstepBlocked, boolean completed) {
         this.title = title;
         this.description = description;
         this.hint = hint;
         this.image = image;
-        this.parentChildId = parentChildId;
+        this.parentId = parentId;
         this.leftChildId = leftChildId;
         this.rightChildId = rightChildId;
         this.backstepBlocked = backstepBlocked;
@@ -41,14 +41,14 @@ public class Option {
     }
 
     public Option(int id, String title, String description, String hint, String image,
-                  int parentChildId, int leftChildId, int rightChildId, boolean backstepBlocked,
+                  int parentId, int leftChildId, int rightChildId, boolean backstepBlocked,
                   boolean completed) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.hint = hint;
         this.image = image;
-        this.parentChildId = parentChildId;
+        this.parentId = parentId;
         this.leftChildId = leftChildId;
         this.rightChildId = rightChildId;
         this.backstepBlocked = backstepBlocked;
@@ -146,5 +146,29 @@ public class Option {
 
     public boolean isChildless() {
         return left == null && right == null;
+    }
+
+    public int getParentId() {
+        return this.parentId;
+    }
+
+    public int getLeftChildId() {
+        return leftChildId;
+    }
+
+    public int getRightChildId() {
+        return rightChildId;
+    }
+
+    public boolean getBackstepBlocked() {
+        return backstepBlocked;
+    }
+
+    public boolean getCompleted() {
+        return completed;
+    }
+
+    public int getId() {
+        return id;
     }
 }

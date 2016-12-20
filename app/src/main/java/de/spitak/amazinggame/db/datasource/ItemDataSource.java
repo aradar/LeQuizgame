@@ -1,4 +1,4 @@
-package de.spitak.amazinggame.db;
+package de.spitak.amazinggame.db.datasource;
 
 import android.content.ContentValues;
 import android.content.Context;
