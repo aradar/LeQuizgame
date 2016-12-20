@@ -27,9 +27,9 @@ public class GameDataSource extends BaseDataSource<Game> {
                 _ID + "=" + id,
                 null,
                 null, null, null);
-        Game newGame = cursorToData(cursor);
+        Game game = cursorToData(cursor);
         cursor.close();
-        return newGame;
+        return game;
     }
 
     @Override
@@ -50,9 +50,9 @@ public class GameDataSource extends BaseDataSource<Game> {
                 null,
                 null, null, null);
         cursor.moveToFirst();
-        Game newGame = cursorToData(cursor);
+        Game game = cursorToData(cursor);
         cursor.close();
-        return newGame;
+        return game;
     }
 
     @Override
