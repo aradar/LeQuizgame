@@ -23,6 +23,11 @@
         </activity>
         <activity android:name=".activity.MenuActivity">
         </activity>
+
+        <provider
+            android:name=".SomethingSomethingProvider"
+            android:authorities="de.spitak.amazinggame.SomethingSomethingProvider"
+            />
     </application>
 
 </manifest>

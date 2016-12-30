@@ -1,12 +1,14 @@
 package de.spitak.amazinggame.model;
 
+import de.spitak.amazinggame.db.base.Entity;
+
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Game {
+public class Game implements Entity {
     private Option currentOption;
-    private int id;
+    private long id;
     private String name;
     private String description;
     private String image;
@@ -25,7 +27,8 @@ public class Game {
         this.image = image;
     }
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 

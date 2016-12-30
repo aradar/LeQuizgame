@@ -4,14 +4,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.spitak.amazinggame.db.base.Entity;
+
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Option {
+public class Option implements Entity {
 
-    private int id;
-    private int gameId;
+    private long id;
+    private long gameId;
     private String title;
     private String description;
     private String hint;
@@ -19,9 +21,9 @@ public class Option {
     private Option parent;
     private Option left;
     private Option right;
-    private int parentId;
-    private int leftChildId;
-    private int rightChildId;
+    private long parentId;
+    private long leftChildId;
+    private long rightChildId;
     private List<Item> drops;
     private List<Item> requirements;
     private boolean backstepBlocked;
@@ -165,15 +167,15 @@ public class Option {
         return left == null && right == null;
     }
 
-    public int getParentId() {
+    public long getParentId() {
         return this.parentId;
     }
 
-    public int getLeftChildId() {
+    public long getLeftChildId() {
         return leftChildId;
     }
 
-    public int getRightChildId() {
+    public long getRightChildId() {
         return rightChildId;
     }
 
@@ -185,7 +187,8 @@ public class Option {
         return completed;
     }
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 }

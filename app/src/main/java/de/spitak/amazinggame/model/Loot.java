@@ -1,16 +1,19 @@
 package de.spitak.amazinggame.model;
 
+import de.spitak.amazinggame.db.base.Entity;
+
 /**
  * Created by dephiloper on 20.12.16.
  */
 
-public class Loot {
-    private int id;
-    private int itemId;
-    private int gameId;
+// TODO: 12/30/16 why the fuck is the gameId here?
+public class Loot implements Entity {
+    private long id;
+    private long itemId;
+    private long gameId;
 
-    public Loot(int _id, int itemId, int gameId) {
-        this.id = _id;
+    public Loot(long id, int itemId, int gameId) {
+        this.id = id;
         this.itemId = itemId;
         this.gameId = gameId;
     }
@@ -20,7 +23,7 @@ public class Loot {
         this.gameId = gameId;
     }
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
@@ -28,7 +31,7 @@ public class Loot {
         this.itemId = itemId;
     }
 
-    public int getGameId() {
+    public long getGameId() {
         return gameId;
     }
 
@@ -36,7 +39,8 @@ public class Loot {
         this.gameId = gameId;
     }
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 }

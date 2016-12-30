@@ -1,13 +1,16 @@
 package de.spitak.amazinggame.model;
 
+import de.spitak.amazinggame.db.base.Entity;
+
 /**
  * Created by dephiloper on 20.12.16.
  */
 
-public class Requirement {
-    private int id;
-    private int itemId;
-    private int gameId;
+// TODO: 12/30/16 why the fuck is the gameId here?
+public class Requirement implements Entity {
+    private long id;
+    private long itemId;
+    private long gameId;
 
     public Requirement(int id, int itemId, int gameId) {
         this.id = id;
@@ -20,7 +23,8 @@ public class Requirement {
         this.gameId = gameId;
     }
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 
@@ -28,7 +32,7 @@ public class Requirement {
         this.id = id;
     }
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
@@ -36,7 +40,7 @@ public class Requirement {
         this.itemId = itemId;
     }
 
-    public int getGameId() {
+    public long getGameId() {
         return gameId;
     }
 

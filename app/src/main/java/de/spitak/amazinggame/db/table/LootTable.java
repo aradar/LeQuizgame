@@ -5,7 +5,10 @@ import android.util.Log;
 
 import de.spitak.amazinggame.db.base.Table;
 
-import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns.*;
+import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns.ITEM_ID;
+import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns.OPTION_ID;
+import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns.TABLE_NAME;
+import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns._ID;
 
 /**
  * Created by dephiloper on 09.12.16.
@@ -13,8 +16,8 @@ import static de.spitak.amazinggame.db.table.LootTable.LootTableColumns.*;
 public class LootTable implements Table {
     private static final String createLootTable = "CREATE TABLE " + TABLE_NAME + "(" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ITEM_ID + " INTEGER REFERENCES Item(_id), " +
-            GAME_ID + " INTEGER REFERENCES Game(_id));";
+            OPTION_ID + " INTEGER REFERENCES Game(_id))" +
+            ITEM_ID + " INTEGER REFERENCES Item(_id);";
     
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -39,9 +42,9 @@ public class LootTable implements Table {
     public static class LootTableColumns implements de.spitak.amazinggame.db.base.TableColumns {
         public static final String TABLE_NAME = "loot";
 
-        public static final String ITEM_ID = "itemid";
-        public static final String GAME_ID = "gameid";
+        public static final String OPTION_ID = "option_id";
+        public static final String ITEM_ID = "item_id";
 
-        public static final String[] COLUMN_NAMES = new String[]{_ID, ITEM_ID, GAME_ID};
+        public static final String[] COLUMN_NAMES = new String[]{_ID, OPTION_ID, ITEM_ID};
     }
 }

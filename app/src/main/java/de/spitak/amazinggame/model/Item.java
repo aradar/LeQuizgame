@@ -1,12 +1,14 @@
 package de.spitak.amazinggame.model;
 
+import de.spitak.amazinggame.db.base.Entity;
+
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Item {
+public class Item implements Entity {
 
-    private int id;
+    private long id;
     private String name;
     private String description;
     private String image;
@@ -27,7 +29,8 @@ public class Item {
         this.smallImage = smallImage;
     }
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 

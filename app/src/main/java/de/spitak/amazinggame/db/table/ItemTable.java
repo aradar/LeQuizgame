@@ -5,7 +5,12 @@ import android.util.Log;
 
 import de.spitak.amazinggame.db.base.Table;
 
-import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.*;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.DESCRIPTION;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.IMAGE;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.NAME;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.SMALL_IMAGE;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns.TABLE_NAME;
+import static de.spitak.amazinggame.db.table.ItemTable.ItemTableColumns._ID;
 
 /**
  * Created by dephiloper on 09.12.16.
@@ -46,7 +51,7 @@ public class ItemTable implements Table {
         public static final String NAME = "name";
         public static final String DESCRIPTION = "description";
         public static final String IMAGE = "image";
-        public static final String SMALL_IMAGE = "smallimage";
+        public static final String SMALL_IMAGE = "small_image";
 
         public static final String[] COLUMN_NAMES = {_ID, NAME, DESCRIPTION,
                 IMAGE, SMALL_IMAGE};
