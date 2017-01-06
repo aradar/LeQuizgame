@@ -1,68 +1,93 @@
+/*
 package de.spitak.amazinggame;
 
 import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 
-import com.orm.SugarContext;
-import com.orm.SugarRecord;
-import com.orm.query.Select;
+import org.apache.commons.io.IOUtils;
 
-import de.spitak.amazinggame.model.Game;
-import de.spitak.amazinggame.model.Item;
-import de.spitak.amazinggame.model.Loot;
-import de.spitak.amazinggame.model.Option;
-import de.spitak.amazinggame.model.Requirement;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import io.realm.Realm;
+
+*/
 /**
  * Created by rschlett on 12/29/16.
- */
+ *//*
+
+
 
 
 // TODO: 12/29/16 name has to be changed accordingly to the final name of the game
 // TODO: 12/29/16 add a fucking contract class
 // TODO: 12/30/16 add OptionTemplate and Player
-public class SomethingSomethingProvider extends ContentProvider {
+public class HighScoreProvider extends ContentProvider {
 
-    public static final String AUTHORITY = "de.spitak.amazinggame.SomethingSomethingProvider";
+    public static final String AUTHORITY = "de.spitak.amazinggame.HighScoreProvider";
+    public static final String ALL_PATH = "all";
+    public static final String TOP_PATH = "top/#";
+    public static final String NAME_PATH = "name*/
+/*";
+
     public static final String URL = "content://" + AUTHORITY;
-    public static final String GAMES_PATH = "games";
-    public static final String ITEMS_PATH = "items";
-    public static final String LOOT_PATH = "loot";
-    public static final String OPTIONS_PATH = "options";
-    public static final String REQUIREMENTS_PATH = "requirements";
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     private static final UriMatcher uriMatcher;
 
+    private enum RequestType {ALL, TOP, NAME}
+
+    private static final String[] columns = new String[] { "position", "name", "movesTaken" };
+
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, GAMES_PATH, RequestType.MULTIPLE_ROWS.ordinal());
-        uriMatcher.addURI(AUTHORITY, GAMES_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
-        uriMatcher.addURI(AUTHORITY, ITEMS_PATH, RequestType.MULTIPLE_ROWS.ordinal());
-        uriMatcher.addURI(AUTHORITY, ITEMS_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
-        uriMatcher.addURI(AUTHORITY, LOOT_PATH, RequestType.MULTIPLE_ROWS.ordinal());
-        uriMatcher.addURI(AUTHORITY, LOOT_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
-        uriMatcher.addURI(AUTHORITY, OPTIONS_PATH, RequestType.MULTIPLE_ROWS.ordinal());
-        uriMatcher.addURI(AUTHORITY, OPTIONS_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
-        uriMatcher.addURI(AUTHORITY, REQUIREMENTS_PATH, RequestType.MULTIPLE_ROWS.ordinal());
-        uriMatcher.addURI(AUTHORITY, REQUIREMENTS_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
+        uriMatcher.addURI(AUTHORITY, ALL_PATH, RequestType.ALL.ordinal());
+        uriMatcher.addURI(AUTHORITY, TOP_PATH, RequestType.TOP.ordinal());
+        uriMatcher.addURI(AUTHORITY, NAME_PATH, RequestType.NAME.ordinal());
     }
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        SugarContext.init(context);
-
+        Realm.init(context);
         return true; // should this be always true
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+        RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
+        switch (requestType) {
+            case ALL:
+                try {
+                    java.net.URL url = new URL("http://localhost:4567/all");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    String allHighScoreEntities = IOUtils.toString(connection.getInputStream());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case NAME:
+                break;
+
+            case TOP:
+                break;
+        }
+
+        MatrixCursor matrixCursor = new MatrixCursor(columns);
+
+
         Class type = getType(uri.getPathSegments().get(0));
         return Select.from(type)
                 .where(selection, selectionArgs)
@@ -144,6 +169,8 @@ public class SomethingSomethingProvider extends ContentProvider {
         }
     }
 
-    private enum RequestType {SINGLE_ROW, MULTIPLE_ROWS}
+
 
 }
+
+*/

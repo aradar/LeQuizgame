@@ -8,4 +8,5 @@ import android.content.ContentValues;
 
 public interface Entity<T> {
     T fromContentValueToEntity(ContentValues values);
+
 }

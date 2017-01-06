@@ -2,14 +2,13 @@ package de.spitak.amazinggame.model;
 
 import android.content.ContentValues;
 
-import com.google.common.base.Strings;
-import com.orm.SugarRecord;
+import io.realm.RealmObject;
 
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Item extends SugarRecord implements Entity<Item> {
+public class Item extends RealmObject implements Entity<Item> {
 
     private String name;
     private String description;
@@ -19,31 +18,41 @@ public class Item extends SugarRecord implements Entity<Item> {
     public Item() {
     }
 
-    public Item(String name, String description, String image, String smallImage) {
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.smallImage = smallImage;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getImage() {
         return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getSmallImage() {
         return smallImage;
     }
 
+    public void setSmallImage(String smallImage) {
+        this.smallImage = smallImage;
+    }
+
     @Override
     public Item fromContentValueToEntity(ContentValues values) {
+/*
         boolean isNotNull = true;
         isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("name"));
         isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("description"));
@@ -55,5 +64,7 @@ public class Item extends SugarRecord implements Entity<Item> {
                     values.getAsString("image"), values.getAsString("smallImage"));
         else
             throw new IllegalArgumentException("The column names have to be complete.");
+*/
+        return null;
     }
 }

@@ -34,8 +34,7 @@ public class GameViewModel extends BaseObservable {
     }
 
     public OptionViewModel getCurrentOptionViewModel() {
-        //return new OptionViewModel(game.getCurrentOption());
-        return null;
+        return new OptionViewModel(game.getCurrentOption());
     }
 
     public SwipeableCardView.OnSwipeListener onSwipe() {
@@ -43,10 +42,10 @@ public class GameViewModel extends BaseObservable {
             @Override
             public void onSwipe(SwipeEvent swipeEvent) {
                 if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.LEFT)) {
-                    //game.takeLeftOption();
+                    game.takeLeftOption();
                 } else if (swipeEvent.getSwipeDirection()
                         .equals(SwipeDetector.SwipeDirection.RIGHT)) {
-                    //game.takeRightOption();
+                    game.takeRightOption();
                 }
                 notifyChange();
             }
@@ -54,11 +53,11 @@ public class GameViewModel extends BaseObservable {
     }
 
     public void onBackClick (View v) {
-//        if (!game.getCurrentOption().isRoot()) {
-//            game.takeParentOption();
-//            onBackButtonPressed();
-//            notifyChange();
-//        }
+        if (!game.getCurrentOption().isRoot()) {
+            game.takeParentOption();
+            onBackButtonPressed();
+            notifyChange();
+        }
     }
 
     public interface OnBackButtonPressedListener {

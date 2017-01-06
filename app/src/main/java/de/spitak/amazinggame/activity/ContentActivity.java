@@ -1,18 +1,16 @@
 package de.spitak.amazinggame.activity;
 
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.orm.SugarContext;
+import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.UUID;
 
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.model.Game;
 import de.spitak.amazinggame.model.Option;
+import io.realm.Realm;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -21,37 +19,59 @@ public class ContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
 
-        SugarContext.init(this);
+        Realm.init(this);
+        Realm realm = Realm.getDefaultInstance();
 
-        Game game = new Game("hallo", "ich bin eine beschreibung", "");
-        game.save();
+        realm.beginTransaction();
+        Game game = realm.createObject(Game.class, UUID.randomUUID().toString());
+        game.setName("hallo");
+        game.setDescription("ich bin eine beschreibung");
+
+        Option o1 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o1.setTitle("kopf");
+        o1.setDescription("ich bin ein kopf");
+        Option o2 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o2.setTitle("links");
+        o2.setDescription("ich bin ein fuss");
+        Option o3 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o3.setTitle("rechts");
+        o3.setDescription("ich bin ein fuss");
+        Option o4 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o4.setTitle("linkslinks");
+        o4.setDescription("ich bin ein fuss");
+        Option o5 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o5.setTitle("linksrechts");
+        o5.setDescription("ich bin ein fuss");
+        Option o6 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o6.setTitle("rechtslinks");
+        o6.setDescription("ich bin ein fuss");
+        Option o7 = realm.createObject(Option.class, UUID.randomUUID().toString());
+        o7.setTitle("rechtsrechts");
+        o7.setDescription("ich bin ein fuss");
+
+        o1.setLeft(o2);
+        o1.setRight(o3);
+        o2.setParent(o1);
+        o2.setLeft(o4);
+        o4.setParent(o2);
+        o2.setRight(o5);
+        o5.setParent(o2);
+        o3.setParent(o1);
+        o3.setLeft(o6);
+        o6.setParent(o3);
+        o3.setRight(o7);
+        o7.setParent(o3);
 
 
-        Option.deleteAll(Option.class);
-        Option o1 = new Option(game, "kopf", "ich bin ein kopf", "", "", false, false, 1);
-        Option o2 = new Option(game, "links", "ich bin ein fuss", "", "", false, false, 2);
-        Option o3 = new Option(game, "rechts", "ich bin ein fuss", "", "", false, false, 3);
-        Option o4 = new Option(game, "linkslinks", "ich bin ein fuss", "", "", false, false, 4);
-        Option o5 = new Option(game, "linksrechts", "ich bin ein fuss", "", "", false, false, 5);
-        Option o6 = new Option(game, "rechtslinks", "ich bin ein fuss", "", "", false, false, 6);
-        Option o7 = new Option(game, "rechtsrechts", "ich bin ein fuss", "", "", false, false, 7);
+        game.getOptions().addAll(Arrays.asList(o1, o2, o3, o4, o5, o6, o7));
 
-        List<Option> optionList = Arrays.asList(new Option[]{o1, o2, o3, o4, o5, o6, o7});
-        for (Option option :
-                optionList) {
-            option.save();
+
+        realm.commitTransaction();
+        Game thebestgame = realm.where(Game.class).findFirst();
+        Option option = thebestgame.getOptions().get(0);
+        while (option != null) {
+            Toast.makeText(this, option.getTitle(), Toast.LENGTH_SHORT).show();
+            option = option.getRight();
         }
-
-        optionList = Option.find(Option.class,
-                "game = ?",
-                new String[]{Long.toString(game.getId())});
-
-        Cursor cursor = getContentResolver()
-                .query(
-                        Uri.parse("content://de.spitak.amazinggame.SomethingSomethingProvider/games"),
-                        null,
-                        "id=1",
-                        null,
-                        null);
     }
 }
