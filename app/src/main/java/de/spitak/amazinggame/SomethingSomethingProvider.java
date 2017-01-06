@@ -6,16 +6,11 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
-import de.spitak.amazinggame.db.MauswieselSQLiteOpenHelper;
-import de.spitak.amazinggame.db.base.DataSource;
-import de.spitak.amazinggame.db.base.Entity;
-import de.spitak.amazinggame.db.datasource.GameDataSource;
-import de.spitak.amazinggame.db.datasource.ItemDataSource;
-import de.spitak.amazinggame.db.datasource.LootDataSource;
-import de.spitak.amazinggame.db.datasource.OptionDataSource;
-import de.spitak.amazinggame.db.datasource.RequirementDataSource;
+import com.orm.SugarContext;
+import com.orm.SugarRecord;
+import com.orm.query.Select;
+
 import de.spitak.amazinggame.model.Game;
 import de.spitak.amazinggame.model.Item;
 import de.spitak.amazinggame.model.Loot;
@@ -25,6 +20,7 @@ import de.spitak.amazinggame.model.Requirement;
 /**
  * Created by rschlett on 12/29/16.
  */
+
 
 // TODO: 12/29/16 name has to be changed accordingly to the final name of the game
 // TODO: 12/29/16 add a fucking contract class
@@ -56,44 +52,47 @@ public class SomethingSomethingProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, REQUIREMENTS_PATH + "/#", RequestType.SINGLE_ROW.ordinal());
     }
 
-    private GameDataSource gameDataSource;
-    private ItemDataSource itemDataSource;
-    private LootDataSource lootDataSource;
-    private OptionDataSource optionDataSource;
-    private RequirementDataSource requirementDataSource;
-
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        MauswieselSQLiteOpenHelper sqLiteOpenHelper = new MauswieselSQLiteOpenHelper(context);
-        gameDataSource = new GameDataSource(context);
-        itemDataSource = new ItemDataSource(context);
-        lootDataSource = new LootDataSource(context);
-        optionDataSource = new OptionDataSource(context);
-        requirementDataSource = new RequirementDataSource(context);
+        SugarContext.init(context);
 
-        return sqLiteOpenHelper.getWritableDatabase() != null;
+        return true; // should this be always true
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        Cursor cursor = null;
-        DataSource<?> dataSource = getDataSourceByPathSegment(uri.getPathSegments().get(0));
-        if (dataSource != null) {
-            RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
-            switch (requestType) {
-                case SINGLE_ROW:
-                    cursor = dataSource.query(projection, getIdFromUri(uri, 1), sortOrder);
-                    break;
+        Class type = getType(uri.getPathSegments().get(0));
+        return Select.from(type)
+                .where(selection, selectionArgs)
+                .getCursor();
+    }
 
-                case MULTIPLE_ROWS:
-                    cursor = dataSource.query(projection, selection, selectionArgs, sortOrder);
-                    break;
-            }
+    private Class getType(String pathSegment) {
+        Class type = null;
+        switch (pathSegment) {
+            case GAMES_PATH:
+                type = Game.class;
+                break;
+
+            case ITEMS_PATH:
+                type = Item.class;
+                break;
+
+            case LOOT_PATH:
+                type = Loot.class;
+                break;
+
+            case OPTIONS_PATH:
+                type = Option.class;
+                break;
+
+            case REQUIREMENTS_PATH:
+                type = Requirement.class;
+                break;
         }
-
-        return cursor;
+        return type;
     }
 
     // TODO: 12/30/16 the mimeType has to be also changed based on the final game name
@@ -121,76 +120,18 @@ public class SomethingSomethingProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
-        DataSource<?> dataSource = getDataSourceByPathSegment(uri.getPathSegments().get(0));
-        Uri returnUri = null;
-        if (dataSource != null && requestType == RequestType.MULTIPLE_ROWS) {
-            long newId = dataSource.insert(values);
-            Cursor cursor = dataSource.query(null, newId, null);
-            cursor.moveToFirst();
-            Entity entity = dataSource.cursorToEntity(cursor);
-            cursor.close();
-            returnUri = entityToUri(entity);
-        }
-
-        return returnUri;
+        Class type = getType(uri.getPathSegments().get(0));
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int affectedRows = 0;
-        DataSource<?> dataSource = getDataSourceByPathSegment(uri.getPathSegments().get(0));
-        if (dataSource != null) {
-            RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
-            switch (requestType) {
-                case SINGLE_ROW:
-                    affectedRows = dataSource.delete(getIdFromUri(uri, 1));
-                    break;
-
-                case MULTIPLE_ROWS:
-                    affectedRows = dataSource.delete(selection, selectionArgs);
-                    break;
-            }
-        }
-
-        return affectedRows;
+        Class type = getType(uri.getPathSegments().get(0));
+        return SugarRecord.deleteAll(type, selection, selectionArgs);
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        int affectedRows = 0;
-        DataSource<?> dataSource = getDataSourceByPathSegment(uri.getPathSegments().get(0));
-        if (dataSource != null) {
-            RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
-            switch (requestType) {
-                case SINGLE_ROW:
-                    affectedRows = dataSource.update(values, getIdFromUri(uri, 1));
-                    break;
-
-                case MULTIPLE_ROWS:
-                    affectedRows = dataSource.update(values, selection, selectionArgs);
-                    break;
-            }
-        }
-
-        return affectedRows;
-    }
-
-    @Nullable
-    private Uri entityToUri(Entity entity) {
-        if (entity instanceof Game) {
-            return Uri.parse(URL + "/" + GAMES_PATH);
-        } else if (entity instanceof Item) {
-            return Uri.parse(URL + "/" + ITEMS_PATH);
-        } else if (entity instanceof Loot) {
-            return Uri.parse(URL + "/" + LOOT_PATH);
-        } else if (entity instanceof Option) {
-            return Uri.parse(URL + "/" + OPTIONS_PATH);
-        } else if (entity instanceof Requirement) {
-            return Uri.parse(URL + "/" + REQUIREMENTS_PATH);
-        }
-
-        return null;
+        return -1;
     }
 
     // TODO: 12/29/16 should this be refactored? (change to stringToLong)
@@ -203,27 +144,6 @@ public class SomethingSomethingProvider extends ContentProvider {
         }
     }
 
-    @Nullable
-    private DataSource<?> getDataSourceByPathSegment(String pathSegment) {
-        switch (pathSegment) {
-            case GAMES_PATH:
-                return gameDataSource;
-
-            case ITEMS_PATH:
-                return itemDataSource;
-
-            case LOOT_PATH:
-                return lootDataSource;
-
-            case OPTIONS_PATH:
-                return optionDataSource;
-
-            case REQUIREMENTS_PATH:
-                return requirementDataSource;
-        }
-
-        return null;
-    }
-
     private enum RequestType {SINGLE_ROW, MULTIPLE_ROWS}
+
 }

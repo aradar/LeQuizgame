@@ -1,16 +1,18 @@
 package de.spitak.amazinggame.activity;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+
+import com.orm.SugarContext;
+
+import java.util.Arrays;
+import java.util.List;
 
 import de.spitak.amazinggame.R;
-import de.spitak.amazinggame.db.datasource.GameDataSource;
 import de.spitak.amazinggame.model.Game;
+import de.spitak.amazinggame.model.Option;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -18,45 +20,38 @@ public class ContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-//        GameDataSource gameSource = new GameDataSource(this);
-//        OptionDataSource optionSource = new OptionDataSource(this);
-//        ItemDataSource itemSource = new ItemDataSource(this);
-//        LootDataSource lootSource = new LootDataSource(this);
-//        RequirementDataSource requirementSource = new RequirementDataSource(this);
-//
-//        Game game = new Game("Beste Game",
-//                "Du musst dir in diesem Vorlesungsraum schwachsinn anhören!",
-//                "");
-//        Option option = new Option(1,"Du befindest dich in einem verlassenen Raum",
-//                "Ich kann kaum etwas sehen.","","",-1,1,2,true,false);
-//        gameSource.open();
-//        gameSource.delete();
-//        gameSource.insert(game);
-//        optionSource.open();
-//        optionSource.insert(option);
-//        List<Game> values = gameSource.query();
-//
-//        for (Game game1 : values) {
-//            Toast.makeText(this, Long.toString(game1.getId()), Toast.LENGTH_SHORT).show();
-//        }
 
-        ContentResolver contentResolver = getContentResolver();
-        Uri gameUri = Uri.parse("content://de.spitak.amazinggame.SomethingSomethingProvider/games");
+        SugarContext.init(this);
 
-        System.out.println(gameUri == null);
+        Game game = new Game("hallo", "ich bin eine beschreibung", "");
+        game.save();
 
-        Game game = new Game("Beste Game",
-                "Du musst dir in diesem Vorlesungsraum schwachsinn anhören!",
-                "");
-        GameDataSource gameDataSource = new GameDataSource(this);
-        ContentValues values = gameDataSource.entityToContentValues(game);
-        contentResolver.insert(gameUri, values);
 
-        Cursor cursor = contentResolver.query(gameUri, null, null, null, null);
-        cursor.moveToFirst();
-        do {
-            Game game2 = gameDataSource.cursorToEntity(cursor);
-            Toast.makeText(this, Long.toString(game2.getId()), Toast.LENGTH_SHORT).show();
-        } while (cursor.moveToNext());
+        Option.deleteAll(Option.class);
+        Option o1 = new Option(game, "kopf", "ich bin ein kopf", "", "", false, false, 1);
+        Option o2 = new Option(game, "links", "ich bin ein fuss", "", "", false, false, 2);
+        Option o3 = new Option(game, "rechts", "ich bin ein fuss", "", "", false, false, 3);
+        Option o4 = new Option(game, "linkslinks", "ich bin ein fuss", "", "", false, false, 4);
+        Option o5 = new Option(game, "linksrechts", "ich bin ein fuss", "", "", false, false, 5);
+        Option o6 = new Option(game, "rechtslinks", "ich bin ein fuss", "", "", false, false, 6);
+        Option o7 = new Option(game, "rechtsrechts", "ich bin ein fuss", "", "", false, false, 7);
+
+        List<Option> optionList = Arrays.asList(new Option[]{o1, o2, o3, o4, o5, o6, o7});
+        for (Option option :
+                optionList) {
+            option.save();
+        }
+
+        optionList = Option.find(Option.class,
+                "game = ?",
+                new String[]{Long.toString(game.getId())});
+
+        Cursor cursor = getContentResolver()
+                .query(
+                        Uri.parse("content://de.spitak.amazinggame.SomethingSomethingProvider/games"),
+                        null,
+                        "id=1",
+                        null,
+                        null);
     }
 }

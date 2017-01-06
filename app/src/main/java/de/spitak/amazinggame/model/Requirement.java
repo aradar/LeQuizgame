@@ -1,50 +1,36 @@
 package de.spitak.amazinggame.model;
 
-import de.spitak.amazinggame.db.base.Entity;
+import android.content.ContentValues;
+
+import com.orm.SugarRecord;
 
 /**
  * Created by dephiloper on 20.12.16.
  */
 
-// TODO: 12/30/16 why the fuck is the gameId here?
-public class Requirement implements Entity {
-    private long id;
-    private long itemId;
-    private long gameId;
+public class Requirement extends SugarRecord implements Entity<Requirement> {
+    private Option option;
+    private Item item;
 
-    public Requirement(int id, int itemId, int gameId) {
-        this.id = id;
-        this.itemId = itemId;
-        this.gameId = gameId;
+    public Requirement() {
     }
 
-    public Requirement(int itemId, int gameId) {
-        this.itemId = itemId;
-        this.gameId = gameId;
+    public Requirement(Option option, Item item) {
+        this.option = option;
+        this.item = item;
     }
+
 
     @Override
-    public long getId() {
-        return id;
-    }
+    public Requirement fromContentValueToEntity(ContentValues values) {
+        boolean isNotNull = true;
+        isNotNull = isNotNull && Option.findById(Option.class, values.getAsLong("option")) != null;
+        isNotNull = isNotNull && Item.findById(Item.class, values.getAsLong("item")) != null;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
-    public long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+        if (isNotNull)
+            return new Requirement(Option.findById(Option.class, values.getAsLong("option")),
+                    Item.findById(Item.class, values.getAsLong("item")));
+        else
+            throw new IllegalArgumentException("The column names have to be complete.");
     }
 }

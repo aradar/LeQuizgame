@@ -1,35 +1,28 @@
 package de.spitak.amazinggame.model;
 
-import de.spitak.amazinggame.db.base.Entity;
+import android.content.ContentValues;
+
+import com.google.common.base.Strings;
+import com.orm.SugarRecord;
 
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Game implements Entity {
+public class Game extends SugarRecord implements Entity<Game> {
+
     private Option currentOption;
-    private long id;
     private String name;
     private String description;
     private String image;
+
+    public Game() {
+    }
 
     public Game(String name, String description, String image) {
         this.name = name;
         this.description = description;
         this.image = image;
-        createTestOption();
-    }
-
-    public Game(int id, String name, String description, String image) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-    }
-
-    @Override
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -44,40 +37,19 @@ public class Game implements Entity {
         return image;
     }
 
-    public void takeLeftOption() {
-        if (currentOption.getLeft() != null) {
-            currentOption = currentOption.getLeft();
-        }
-    }
 
-    public void takeRightOption() {
-        if (currentOption.getRight() != null) {
-            currentOption = currentOption.getRight();
-        }
-    }
+    @Override
+    public Game fromContentValueToEntity(ContentValues values) throws IllegalArgumentException {
+        boolean isNotNull = true;
+        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("name"));
+        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("description"));
+        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("image"));
 
-    public void takeParentOption() { currentOption = currentOption.getParent(); }
-
-    public Option getCurrentOption() {
-        return currentOption;
-    }
-
-    private void createTestOption() {
-        currentOption = new Option("Test", "Test 2000", "");
-
-        currentOption.setLeft(new Option("Kuh",
-                "Macht muh",
-                "finde die Kuh",
-                null,
-                currentOption,
-                null,
-                null));
-        currentOption.setRight(new Option("Hund",
-                "oihrwqwoih",
-                "was macht der Hund",
-                null,
-                currentOption,
-                null,
-                null));
+        if (isNotNull)
+            return new Game(values.getAsString("name"),
+                    values.getAsString("description"),
+                    values.getAsString("image"));
+        else
+            throw new IllegalArgumentException("The column names have to be complete.");
     }
 }

@@ -1,37 +1,29 @@
 package de.spitak.amazinggame.model;
 
-import de.spitak.amazinggame.db.base.Entity;
+import android.content.ContentValues;
+
+import com.google.common.base.Strings;
+import com.orm.SugarRecord;
 
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Item implements Entity {
+public class Item extends SugarRecord implements Entity<Item> {
 
-    private long id;
     private String name;
     private String description;
     private String image;
     private String smallImage;
+
+    public Item() {
+    }
 
     public Item(String name, String description, String image, String smallImage) {
         this.name = name;
         this.description = description;
         this.image = image;
         this.smallImage = smallImage;
-    }
-
-    public Item(int id, String name, String description, String image, String smallImage) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.smallImage = smallImage;
-    }
-
-    @Override
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -48,5 +40,20 @@ public class Item implements Entity {
 
     public String getSmallImage() {
         return smallImage;
+    }
+
+    @Override
+    public Item fromContentValueToEntity(ContentValues values) {
+        boolean isNotNull = true;
+        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("name"));
+        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("description"));
+        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("image"));
+        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("smallImage"));
+
+        if (isNotNull)
+            return new Item(values.getAsString("name"), values.getAsString("description"),
+                    values.getAsString("image"), values.getAsString("smallImage"));
+        else
+            throw new IllegalArgumentException("The column names have to be complete.");
     }
 }
