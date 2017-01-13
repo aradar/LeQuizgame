@@ -1,56 +1,97 @@
-/*
 package de.spitak.amazinggame;
 
 import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import de.spitak.amazinggame.model.HighScore;
 import io.realm.Realm;
 
-*/
-/**
- * Created by rschlett on 12/29/16.
- *//*
-
-
-
-
-// TODO: 12/29/16 name has to be changed accordingly to the final name of the game
-// TODO: 12/29/16 add a fucking contract class
-// TODO: 12/30/16 add OptionTemplate and Player
 public class HighScoreProvider extends ContentProvider {
 
     public static final String AUTHORITY = "de.spitak.amazinggame.HighScoreProvider";
-    public static final String ALL_PATH = "all";
-    public static final String TOP_PATH = "top/#";
-    public static final String NAME_PATH = "name*/
-/*";
 
     public static final String URL = "content://" + AUTHORITY;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     private static final UriMatcher uriMatcher;
+    public static final String SERVER_URL = "http://141.45.206.169:4567/";//"http://192.168.0.17:4567/";
 
-    private enum RequestType {ALL, TOP, NAME}
+    private enum RequestType {
+        ALL("all", SERVER_URL + "all"), TOP("top/#", SERVER_URL + "top/"),
+        NAME("name/*", SERVER_URL + "name/"), ADD("add", SERVER_URL + "add");
+
+        private String cpPath;
+        private String webURL;
+
+        RequestType(String cpPath, String webURL) {
+            this.cpPath = cpPath;
+            this.webURL = webURL;
+        }
+    }
 
     private static final String[] columns = new String[] { "position", "name", "movesTaken" };
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, ALL_PATH, RequestType.ALL.ordinal());
-        uriMatcher.addURI(AUTHORITY, TOP_PATH, RequestType.TOP.ordinal());
-        uriMatcher.addURI(AUTHORITY, NAME_PATH, RequestType.NAME.ordinal());
+        uriMatcher.addURI(AUTHORITY, RequestType.ALL.cpPath, RequestType.ALL.ordinal());
+        uriMatcher.addURI(AUTHORITY, RequestType.TOP.cpPath, RequestType.TOP.ordinal());
+        uriMatcher.addURI(AUTHORITY, RequestType.NAME.cpPath, RequestType.NAME.ordinal());
+        uriMatcher.addURI(AUTHORITY, RequestType.ADD.cpPath, RequestType.ADD.ordinal());
+    }
+
+    public HighScoreProvider() {
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        // Implement this to handle requests to delete one or more rows.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        // TODO: Implement this to handle requests for the MIME type of the data
+        // at the given URI.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
+
+        if (requestType == RequestType.ADD)
+            try {
+                if (putHighscore(RequestType.ADD.webURL, HighScore.toHighScore(values)))
+                    return Uri.parse(AUTHORITY+RequestType.NAME.cpPath);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        else
+            Log.e("Uri insert: ","Wrong Uri use add."); //// TODO: 12.01.17 Exception useful?
+
+        return null;
     }
 
     @Override
@@ -61,116 +102,79 @@ public class HighScoreProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder) {
-        RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
+    public Cursor query(Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
+        RequestType requestType = RequestType.values()[uriMatcher.match(uri)]; //// TODO: 13.01.17 check if not null
+        HighScore[] highScores = null;
         switch (requestType) {
             case ALL:
-                try {
-                    java.net.URL url = new URL("http://localhost:4567/all");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    String allHighScoreEntities = IOUtils.toString(connection.getInputStream());
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    highScores = requestHighscores(RequestType.ALL.webURL);
                 break;
 
             case NAME:
+                    highScores = requestHighscores(RequestType.NAME.webURL + uri.getLastPathSegment());
                 break;
 
             case TOP:
+                    highScores = requestHighscores(RequestType.TOP.webURL + uri.getLastPathSegment());
                 break;
         }
 
         MatrixCursor matrixCursor = new MatrixCursor(columns);
-
-
-        Class type = getType(uri.getPathSegments().get(0));
-        return Select.from(type)
-                .where(selection, selectionArgs)
-                .getCursor();
-    }
-
-    private Class getType(String pathSegment) {
-        Class type = null;
-        switch (pathSegment) {
-            case GAMES_PATH:
-                type = Game.class;
-                break;
-
-            case ITEMS_PATH:
-                type = Item.class;
-                break;
-
-            case LOOT_PATH:
-                type = Loot.class;
-                break;
-
-            case OPTIONS_PATH:
-                type = Option.class;
-                break;
-
-            case REQUIREMENTS_PATH:
-                type = Requirement.class;
-                break;
-        }
-        return type;
-    }
-
-    // TODO: 12/30/16 the mimeType has to be also changed based on the final game name
-    @Override
-    public String getType(Uri uri) {
-        String prefix;
-        String suffix;
-        RequestType requestType = RequestType.values()[uriMatcher.match(uri)];
-        switch (requestType) {
-            case SINGLE_ROW:
-                prefix = "vnd.android.cursor.item";
-                break;
-
-            case MULTIPLE_ROWS:
-                prefix = "vnd.android.cursor.dir";
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        if (highScores != null) {
+            for(HighScore highScore : highScores)
+                matrixCursor.addRow(new Object[]{highScore.getPosition(),
+                        highScore.getName(), highScore.getMovesTaken()});
         }
 
-        suffix = uri.getPathSegments().get(0);
-        return prefix + "/vnd.amazinggame." + suffix;
+        return matrixCursor;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        Class type = getType(uri.getPathSegments().get(0));
+    public int update(Uri uri, ContentValues values, String selection,
+                      String[] selectionArgs) {
+        // TODO: Implement this to handle requests to update one or more rows.
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Class type = getType(uri.getPathSegments().get(0));
-        return SugarRecord.deleteAll(type, selection, selectionArgs);
-    }
+    private HighScore[] requestHighscores(String url) {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestFuture<JSONArray> future = RequestFuture.newFuture();
+        JsonArrayRequest request = new JsonArrayRequest(url,future,future);
+        queue.add(request);
+        JSONArray response = null;
 
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return -1;
-    }
-
-    // TODO: 12/29/16 should this be refactored? (change to stringToLong)
-    private long getIdFromUri(Uri uri, int pathSegmentPosition) {
         try {
-            String idString = uri.getPathSegments().get(pathSegmentPosition);
-            return Long.valueOf(idString);
-        } catch (NumberFormatException ex) {
-            return -1;
+            response = future.get(10, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
         }
+
+        if (response != null)
+            return new Gson().fromJson(response.toString(),HighScore[].class);
+        else
+            return null;
     }
 
+    private boolean putHighscore(String url, HighScore highScore) throws JSONException {
+
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+
+        String jsonString = new Gson().toJson(highScore);
+        JSONObject jsonRequest = new JSONObject(jsonString);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, jsonRequest, future, future);
+        queue.add(request);
+        JSONObject response = null;
 
 
+        try {
+            response = future.get(10, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        return response.getBoolean("success");
+    }
 }
-
-*/
