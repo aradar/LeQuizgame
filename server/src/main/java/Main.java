@@ -1,4 +1,7 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.time.LocalDateTime;
 
 import static spark.Spark.*;
 
@@ -48,9 +51,10 @@ public class Main {
 
             return new Gson().toJson(highScoreEntity);
         });
-        put("/save", (req, res) -> {
-            System.out.println(req.body());
-           return "GEHT SCHON";
+        put("/add", (req, res) -> {
+            System.out.printf("[%s] %s : %s%n", LocalDateTime.now(),req.contentType(), req.body());
+            return "{successss:false}";
         });
     }
+
 }
