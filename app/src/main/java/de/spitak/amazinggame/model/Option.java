@@ -1,7 +1,5 @@
 package de.spitak.amazinggame.model;
 
-import android.content.ContentValues;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
@@ -20,7 +18,6 @@ public class Option extends RealmObject implements Entity<Option> {
     private Option right;
     private boolean backstepBlocked;
     private boolean completed;
-    private long position;
     private RealmList<Item> loot;
     private RealmList<Item> requirement;
 
@@ -77,14 +74,6 @@ public class Option extends RealmObject implements Entity<Option> {
         this.completed = completed;
     }
 
-    public long getPosition() {
-        return position;
-    }
-
-    public void setPosition(long position) {
-        this.position = position;
-    }
-
     public Option getParent() {
         return parent;
     }
@@ -125,34 +114,9 @@ public class Option extends RealmObject implements Entity<Option> {
         this.requirement = requirement;
     }
 
-    @Override
-    public Option fromContentValueToEntity(ContentValues values) throws IllegalArgumentException {
-/*
-        boolean isNotNull = true;
-        //isNotNull = isNotNull && values.getAsInteger("game") != -1;
-        isNotNull = isNotNull && Game.findById(Game.class, values.getAsInteger("game")) != null;
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("title"));
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("description"));
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("hint"));
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("image"));
-        isNotNull = isNotNull && values.getAsInteger("position") != -1;
-
-        if (isNotNull)
-            return new Option(Game.findById(Game.class, values.getAsInteger("game")),
-                    values.getAsString("title"),
-                    values.getAsString("description"),
-                    values.getAsString("hint"),
-                    values.getAsString("image"),
-                    values.getAsBoolean("backstepBlocked"),
-                    values.getAsBoolean("completed"),
-                    values.getAsLong("position"));
-        else
-            throw new IllegalArgumentException("The column names have to be complete.");
-*/
-        return null;
-    }
-
     public boolean isRoot() {
         return this.parent == null;
     }
+
+
 }

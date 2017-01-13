@@ -1,7 +1,5 @@
 package de.spitak.amazinggame.model;
 
-import android.content.ContentValues;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -15,9 +13,11 @@ public class Game extends RealmObject implements Entity<Game> {
     private String name;
     private String description;
     private String image;
+    private RealmList<Option> options;
+    private RealmList<Item> inventory;
+
     @Ignore
     private Option currentOption;
-    private RealmList<Option> options;
 
     public Game() {
         options = new RealmList<>();
@@ -51,13 +51,14 @@ public class Game extends RealmObject implements Entity<Game> {
         return options;
     }
 
-    public void setOptions(RealmList<Option> options) {
+    public void setOpcotions(RealmList<Option> options) {
         this.options = options;
     }
 
     public Option getCurrentOption() {
-        if (currentOption == null)
+        if (currentOption == null) {
             currentOption = options.first();
+        }
 
         return currentOption;
     }
@@ -67,35 +68,41 @@ public class Game extends RealmObject implements Entity<Game> {
     }
 
     public void takeLeftOption() {
-        if (currentOption.getLeft() != null)
-            currentOption = currentOption.getLeft();
+        takeOption(currentOption.getLeft());
     }
 
     public void takeRightOption() {
-        if (currentOption.getRight() != null)
-            currentOption = currentOption.getRight();
+        takeOption(currentOption.getRight());
     }
 
-    @Override
-    public Game fromContentValueToEntity(ContentValues values) throws IllegalArgumentException {
-/*
-        boolean isNotNull = true;
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("name"));
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("description"));
-        isNotNull = isNotNull && !Strings.isNullOrEmpty(values.getAsString("image"));
+    private void takeOption(Option option) {
+        if (option != null && requirementsMet(option.getRequirements())) {
+            currentOption = currentOption.getRight();
+        }
+    }
 
-        if (isNotNull)
-            return new Game(values.getAsString("name"),
-                    values.getAsString("description"),
-                    values.getAsString("image"));
-        else
-            throw new IllegalArgumentException("The column names have to be complete.");
-*/
-        return null;
+    private boolean requirementsMet(RealmList<Item> requirements) {
+        if (requirements != null) {
+            for (Item requirement : requirements) {
+                if (!inventory.contains(requirement)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public void takeParentOption() {
-        if (currentOption.getParent() != null)
+        if (currentOption.getParent() != null && !currentOption.isBackstepBlocked())
             currentOption = currentOption.getParent();
+    }
+
+    public RealmList<Item> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(RealmList<Item> inventory) {
+        this.inventory = inventory;
     }
 }

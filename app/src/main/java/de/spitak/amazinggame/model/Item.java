@@ -1,7 +1,5 @@
 package de.spitak.amazinggame.model;
 
-import android.content.ContentValues;
-
 import io.realm.RealmObject;
 
 /**
@@ -48,23 +46,5 @@ public class Item extends RealmObject implements Entity<Item> {
 
     public void setSmallImage(String smallImage) {
         this.smallImage = smallImage;
-    }
-
-    @Override
-    public Item fromContentValueToEntity(ContentValues values) {
-/*
-        boolean isNotNull = true;
-        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("name"));
-        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("description"));
-        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("image"));
-        isNotNull = isNotNull && Strings.isNullOrEmpty(values.getAsString("smallImage"));
-
-        if (isNotNull)
-            return new Item(values.getAsString("name"), values.getAsString("description"),
-                    values.getAsString("image"), values.getAsString("smallImage"));
-        else
-            throw new IllegalArgumentException("The column names have to be complete.");
-*/
-        return null;
     }
 }

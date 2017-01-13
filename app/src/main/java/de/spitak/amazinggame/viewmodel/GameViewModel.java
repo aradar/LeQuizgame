@@ -52,12 +52,10 @@ public class GameViewModel extends BaseObservable {
         };
     }
 
-    public void onBackClick (View v) {
-        if (!game.getCurrentOption().isRoot()) {
-            game.takeParentOption();
-            onBackButtonPressed();
-            notifyChange();
-        }
+    public void onBackClick(View view) {
+        game.takeParentOption();
+        onBackButtonPressed();
+        notifyChange();
     }
 
     public interface OnBackButtonPressedListener {

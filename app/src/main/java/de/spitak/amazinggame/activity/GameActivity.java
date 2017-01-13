@@ -35,7 +35,13 @@ public class GameActivity extends AppCompatActivity {
         gameViewModel.addOnBackButtonPressedListener(new GameViewModel.OnBackButtonPressedListener() {
             @Override
             public void onBackButtonPressed() {
-                //card.startBackAnimation();
+                card.bottomSwipeOut(new Runnable() {
+                    @Override
+                    public void run() {
+                        gameViewModel.onBackClick(null);
+                        card.topSwipeIn(null);
+                    }
+                });
             }
         });
     }
@@ -49,44 +55,80 @@ public class GameActivity extends AppCompatActivity {
         game.setName("hallo");
         game.setDescription("ich bin eine beschreibung");
 
-        Option o1 = realm.createObject(Option.class);
-        o1.setTitle("kopf");
-        o1.setDescription("ich bin ein kopf");
-        Option o2 = realm.createObject(Option.class);
-        o2.setTitle("links");
-        o2.setDescription("ich bin ein fuss");
-        Option o3 = realm.createObject(Option.class);
-        o3.setTitle("rechts");
-        o3.setDescription("ich bin ein fuss");
-        Option o4 = realm.createObject(Option.class);
-        o4.setTitle("linkslinks");
-        o4.setDescription("ich bin ein fuss");
-        Option o5 = realm.createObject(Option.class);
-        o5.setTitle("linksrechts");
-        o5.setDescription("ich bin ein fuss");
-        Option o6 = realm.createObject(Option.class);
-        o6.setTitle("rechtslinks");
-        o6.setDescription("ich bin ein fuss");
-        Option o7 = realm.createObject(Option.class);
-        o7.setTitle("rechtsrechts");
-        o7.setDescription("ich bin ein fuss");
+        Option head = realm.createObject(Option.class);
+        head.setTitle("kopf");
+        head.setDescription("ich bin ein kopf");
+        Option left = realm.createObject(Option.class);
+        left.setTitle("links");
+        left.setDescription("ich bin ein fuss");
+        Option right = realm.createObject(Option.class);
+        right.setTitle("rechts");
+        right.setDescription("ich bin ein fuss");
+        Option leftLeft = realm.createObject(Option.class);
+        leftLeft.setTitle("linkslinks");
+        leftLeft.setDescription("ich bin ein fuss");
+        Option leftRight = realm.createObject(Option.class);
+        leftRight.setTitle("linksrechts");
+        leftRight.setDescription("ich bin ein fuss");
+        Option rightLeft = realm.createObject(Option.class);
+        rightLeft.setTitle("rechtslinks");
+        rightLeft.setDescription("ich bin ein fuss");
+        Option rightRight = realm.createObject(Option.class);
+        rightRight.setTitle("rechtsrechts");
+        rightRight.setDescription("ich bin ein fuss");
+        Option leftLeftEnd = realm.createObject(Option.class);
+        leftLeftEnd.setTitle("linkslinks ende");
+        leftLeftEnd.setBackstepBlocked(true);
+        leftLeftEnd.setDescription("DAS ENDE");
+        Option leftRightEnd = realm.createObject(Option.class);
+        leftRightEnd.setTitle("linksrechts ende");
+        leftRightEnd.setBackstepBlocked(true);
+        leftRightEnd.setDescription("DAS ENDE");
+        Option rightLeftEnd = realm.createObject(Option.class);
+        rightLeftEnd.setTitle("rechtslinks ende");
+        rightLeftEnd.setBackstepBlocked(true);
+        rightLeftEnd.setDescription("DAS ENDE");
+        Option rightRightEnd = realm.createObject(Option.class);
+        rightRightEnd.setTitle("rechtsrechts ende");
+        rightRightEnd.setBackstepBlocked(true);
+        rightRightEnd.setDescription("DAS ENDE");
 
-        o1.setLeft(o2);
-        o1.setRight(o3);
-        o2.setParent(o1);
-        o2.setLeft(o4);
-        o4.setParent(o2);
-        o2.setRight(o5);
-        o5.setParent(o2);
-        o3.setParent(o1);
-        o3.setLeft(o6);
-        o6.setParent(o3);
-        o3.setRight(o7);
-        o7.setParent(o3);
+        head.setLeft(left);
+        head.setRight(right);
 
+        left.setParent(head);
+        left.setLeft(leftLeft);
+        leftLeft.setParent(left);
+        leftLeft.setLeft(leftLeftEnd);
+        leftLeft.setRight(leftLeftEnd);
+        leftLeftEnd.setParent(leftLeft);
+        left.setRight(leftRight);
+        leftRight.setParent(left);
+        leftRight.setLeft(leftRightEnd);
+        leftRight.setRight(leftRightEnd);
+        leftRightEnd.setParent(leftRight);
 
-        game.getOptions().addAll(Arrays.asList(o1, o2, o3, o4, o5, o6, o7));
-        game.setCurrentOption(o1);
+        right.setParent(head);
+        right.setLeft(rightLeft);
+        rightLeft.setParent(right);
+        rightLeft.setLeft(leftRightEnd);
+        rightLeft.setRight(leftRightEnd);
+        leftRightEnd.setParent(rightLeft);
+        rightRight.setParent(rightLeft);
+        right.setRight(rightRight);
+        rightRight.setParent(right);
+        rightRight.setLeft(rightRightEnd);
+        rightRight.setRight(rightRightEnd);
+
+        game.getOptions()
+                .addAll(Arrays.asList(head,
+                        left,
+                        right,
+                        leftLeft,
+                        leftRight,
+                        rightLeft,
+                        rightRight));
+        game.setCurrentOption(head);
 
         realm.commitTransaction();
         return realm.where(Game.class).findFirst();

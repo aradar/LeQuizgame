@@ -51,6 +51,47 @@ public class SwipeableCardView extends CardView {
         }
     }
 
+    public void leftSwipeOut(Runnable runnable) {
+        animationHelper.leftSwipeOut(runnable);
+    }
+
+    public void rightSwipeOut(Runnable runnable) {
+        animationHelper.rightSwipeOut(runnable);
+    }
+
+    public void topSwipeOut(Runnable runnable) {
+        animationHelper.topSwipeOut(runnable);
+    }
+
+    public void bottomSwipeOut(Runnable runnable) {
+        animationHelper.bottomSwipeOut(runnable);
+    }
+
+    public void leftSwipeIn(Runnable runnable) {
+        animationHelper.leftSwipeIn(runnable);
+    }
+
+    public void rightSwipeIn(Runnable runnable) {
+        animationHelper.rightSwipeIn(runnable);
+    }
+
+    public void topSwipeIn(Runnable runnable) {
+        animationHelper.topSwipeIn(runnable);
+    }
+
+    public void bottomSwipeIn(Runnable runnable) {
+        animationHelper.bottomSwipeIn(runnable);
+    }
+
+    public void appearInCenter(Runnable runnable) {
+        animationHelper.appearInCenter(runnable);
+    }
+
+    public void resetToCenter(Runnable runnable) {
+        animationHelper.resetToCenter(runnable);
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (swipeDetector != null) {
