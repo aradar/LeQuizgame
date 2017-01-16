@@ -22,6 +22,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         activityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game);
 
         Game g = getGame();

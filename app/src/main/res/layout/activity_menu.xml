@@ -24,4 +24,10 @@
         android:onClick="onClickShowHighscore"
         android:text="@string/button_show_highscore" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickShowSettings"
+        android:text="@string/button_show_settings"
+        />
 </LinearLayout>

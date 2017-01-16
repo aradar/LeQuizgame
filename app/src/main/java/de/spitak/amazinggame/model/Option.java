@@ -7,7 +7,7 @@ import io.realm.RealmObject;
  * Created by rschlett on 10/28/16.
  */
 
-public class Option extends RealmObject implements Entity<Option> {
+public class Option extends RealmObject {
 
     private String title;
     private String description;

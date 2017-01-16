@@ -2,4 +2,7 @@
     <string name="app_name">Le Quizgame</string>
     <string name="button_game_test_start">Start Game Test</string>
     <string name="button_show_highscore">Show Highscore</string>
+    <string name="settings_name">Name eingeben …</string>
+    <string name="button_show_settings">Einstellungen</string>
+    <string name="insert_name">Bitte zuerst Name festlegen.</string>
 </resources>

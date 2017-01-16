@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by rschlett on 10/28/16.
  */
 
-public class Item extends RealmObject implements Entity<Item> {
+public class Item extends RealmObject {
 
     private String name;
     private String description;

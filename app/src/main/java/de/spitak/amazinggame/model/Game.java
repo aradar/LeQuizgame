@@ -8,13 +8,14 @@ import io.realm.annotations.Ignore;
  * Created by rschlett on 10/28/16.
  */
 
-public class Game extends RealmObject implements Entity<Game> {
+public class Game extends RealmObject {
 
     private String name;
     private String description;
     private String image;
     private RealmList<Option> options;
     private RealmList<Item> inventory;
+    private int movesTaken;
 
     @Ignore
     private Option currentOption;
@@ -51,8 +52,16 @@ public class Game extends RealmObject implements Entity<Game> {
         return options;
     }
 
-    public void setOpcotions(RealmList<Option> options) {
+    public void setOptions(RealmList<Option> options) {
         this.options = options;
+    }
+
+    public int getMovesTaken() {
+        return movesTaken;
+    }
+
+    public void setMovesTaken(int movesTaken) {
+        this.movesTaken = movesTaken;
     }
 
     public Option getCurrentOption() {
