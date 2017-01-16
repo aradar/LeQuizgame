@@ -99,6 +99,7 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="20dp"
             android:onClick="@{game::onBackClick}"
+            android:src="@drawable/ic_undo_white_24dp"
             app:fabSize="normal"
             />
     </RelativeLayout>

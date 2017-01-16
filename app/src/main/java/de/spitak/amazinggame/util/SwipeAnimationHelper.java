@@ -56,19 +56,21 @@ public class SwipeAnimationHelper {
     }
 
     public void leftSwipeOut(Runnable runnable) {
-        startOut(runnable, -1, HORIZONTAL_X_MOVEMENT, HORIZONTAL_Y_MOVEMENT);
+        final int ROTATION = -30;
+        startOut(runnable, -1, ROTATION, HORIZONTAL_X_MOVEMENT, HORIZONTAL_Y_MOVEMENT);
     }
 
     public void rightSwipeOut(Runnable runnable) {
-        startOut(runnable, 1, HORIZONTAL_X_MOVEMENT, HORIZONTAL_Y_MOVEMENT);
+        final int ROTATION = 30;
+        startOut(runnable, 1, ROTATION, HORIZONTAL_X_MOVEMENT, HORIZONTAL_Y_MOVEMENT);
     }
 
     public void topSwipeOut(Runnable runnable) {
-        startOut(runnable, -1, VERTICAL_X_MOVEMENT, VERTICAL_Y_MOVEMENT);
+        startOut(runnable, -1, 0, 0, VERTICAL_Y_MOVEMENT);
     }
 
     public void bottomSwipeOut(Runnable runnable) {
-        startOut(runnable, +1, VERTICAL_X_MOVEMENT, VERTICAL_Y_MOVEMENT);
+        startOut(runnable, +1, 0, 0, VERTICAL_Y_MOVEMENT);
     }
 
     public void swipeIn(SwipeDetector.SwipeDirection direction, Runnable runnable) {
@@ -121,25 +123,24 @@ public class SwipeAnimationHelper {
                 .alpha(1);
     }
 
-    private void startOut(Runnable runnable, int modifier, float xMovement, float yMovement) {
-        final int ROTATION = 30;
-
+    private void startOut(Runnable runnable, int modifier, int rotation, float xMovement, float yMovement) {
         view.animate()
                 .withEndAction(runnable)
-                .rotationBy(modifier * ROTATION)
+                .rotationBy(rotation)
                 .xBy(modifier * xMovement)
                 .yBy(yMovement);
     }
 
     private void startIn(Runnable runnable, float xPostion, float yPosition) {
-        view.setX(xPostion);
-        view.setY(yPosition);
-        view.setRotation(0);
+            view.setX(xPostion);
+            view.setY(yPosition);
+            view.setRotation(0);
 
         view.animate()
                 .withEndAction(runnable)
                 .x(RESET_RAW_X)
                 .y(RESET_RAW_Y);
+
     }
 
     public void resetToCenter(Runnable runnable) {

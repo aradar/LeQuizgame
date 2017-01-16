@@ -15,6 +15,12 @@ public class Game extends RealmObject {
     private String image;
     private RealmList<Option> options;
     private RealmList<Item> inventory;
+
+    @Ignore
+    private boolean completed;
+
+    // TODO: 1/16/17 can be changed later
+    @Ignore
     private int movesTaken;
 
     @Ignore
@@ -113,5 +119,13 @@ public class Game extends RealmObject {
 
     public void setInventory(RealmList<Item> inventory) {
         this.inventory = inventory;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

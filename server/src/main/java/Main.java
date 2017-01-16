@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static spark.Spark.*;
 
@@ -38,7 +39,7 @@ public class Main {
 
         get("/all", (req, res) -> {
             res.type("application/json");
-            return getHighScoreEntities(5);
+            return getHighScoreEntities(highScores.size());
         });
         get("/name/:name", (req, res) -> {
             res.type("application/json");
@@ -51,11 +52,26 @@ public class Main {
             return new Gson().toJson(highScore);
         });
         put("/add", (req, res) -> {
-            sort();
             try {
                 HighScore highScore = new Gson().fromJson(req.body(),HighScore.class);
-                highScores.add(highScore);
+
+                boolean exists = false;
+
+                for(HighScore highScoreElem : highScores) {
+                    if (Objects.equals(highScoreElem.name, highScore.name)) {
+                        exists = true;
+                        if (highScoreElem.movesTaken > highScore.movesTaken) {
+                            highScoreElem.movesTaken = highScore.movesTaken;
+                        }
+                    }
+                }
+
+
+                if (!exists)
+                    highScores.add(highScore);
+
                 System.out.printf("[%s] %s : %s%n", LocalDateTime.now(),req.contentType(), req.body());
+                sort();
                 return "{success:true}";
             } catch (com.google.gson.JsonSyntaxException ex) {
                 return "{success:false}";

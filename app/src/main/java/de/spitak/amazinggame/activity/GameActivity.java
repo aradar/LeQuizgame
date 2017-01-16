@@ -9,6 +9,7 @@ import java.util.Arrays;
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.databinding.ActivityGameBinding;
 import de.spitak.amazinggame.model.Game;
+import de.spitak.amazinggame.model.Item;
 import de.spitak.amazinggame.model.Option;
 import de.spitak.amazinggame.view.SwipeableCardView;
 import de.spitak.amazinggame.viewmodel.GameViewModel;
@@ -42,6 +43,7 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         gameViewModel.onBackClick(null);
                         card.topSwipeIn(null);
+                        //card.resetToCenter(null);
                     }
                 });
             }
@@ -54,9 +56,15 @@ public class GameActivity extends AppCompatActivity {
 
         realm.beginTransaction();
         Game game = realm.createObject(Game.class);
-        game.setName("hallo");
-        game.setDescription("ich bin eine beschreibung");
-
+        game.setName("Cheers!");
+        game.setDescription("Dein Schädel brummt wie Sau. " +
+                "Du befindest dich in ... ja wo befindest" +
+                "du dich eigentlich? Versuche herauszufinden, " +
+                "wo du bist und was passiert ist. In deinem" +
+                "Besitz befindet sich eine Ananas.");
+        /*Item
+        game.addItem()
+*/
         Option head = realm.createObject(Option.class);
         head.setTitle("kopf");
         head.setDescription("ich bin ein kopf");
@@ -82,17 +90,21 @@ public class GameActivity extends AppCompatActivity {
         leftLeftEnd.setTitle("linkslinks ende");
         leftLeftEnd.setBackstepBlocked(true);
         leftLeftEnd.setDescription("DAS ENDE");
+        leftLeftEnd.setCompleted(true);
         Option leftRightEnd = realm.createObject(Option.class);
         leftRightEnd.setTitle("linksrechts ende");
         leftRightEnd.setBackstepBlocked(true);
         leftRightEnd.setDescription("DAS ENDE");
+        leftRightEnd.setCompleted(true);
         Option rightLeftEnd = realm.createObject(Option.class);
         rightLeftEnd.setTitle("rechtslinks ende");
         rightLeftEnd.setBackstepBlocked(true);
         rightLeftEnd.setDescription("DAS ENDE");
+        rightLeftEnd.setCompleted(true);
         Option rightRightEnd = realm.createObject(Option.class);
         rightRightEnd.setTitle("rechtsrechts ende");
         rightRightEnd.setBackstepBlocked(true);
+        rightRightEnd.setCompleted(true);
         rightRightEnd.setDescription("DAS ENDE");
 
         head.setLeft(left);
@@ -134,6 +146,11 @@ public class GameActivity extends AppCompatActivity {
 
         realm.commitTransaction();
         return realm.where(Game.class).findFirst();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

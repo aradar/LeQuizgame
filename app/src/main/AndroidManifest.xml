@@ -32,8 +32,8 @@
             android:exported="true"
             />
 
-        <activity android:name=".activity.HighscoreActivity"/>
-        <activity android:name=".activity.SettingsActivity">
+        <activity android:name=".activity.HighscoreActivity" android:label="@string/highscore"/>
+        <activity android:name=".activity.SettingsActivity" android:label="@string/button_show_settings">
         </activity>
     </application>
 
