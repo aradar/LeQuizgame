@@ -27,6 +27,8 @@
             android:authorities="de.spitak.amazinggame.HighScoreProvider"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".activity.HighscoreActivity" />
     </application>
 
 </manifest>

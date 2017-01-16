@@ -17,4 +17,11 @@
         android:text="@string/button_game_test_start"
         />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickShowHighscore"
+        android:text="@string/button_show_highscore" />
+
 </LinearLayout>

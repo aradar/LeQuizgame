@@ -36,7 +36,7 @@ public class HighScoreProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     private static final UriMatcher uriMatcher;
-    public static final String SERVER_URL = /*"http://141.45.206.169:4567/";*/"http://192.168.0.17:4567/";/**/
+    public static final String SERVER_URL = /*"http://141.45.206.169:4567/";*/"http://192.168.0.10:4567/";/**/
 
     private enum RequestType {
         ALL("all", SERVER_URL + "all"), TOP("top/#", SERVER_URL + "top/"),
@@ -51,7 +51,7 @@ public class HighScoreProvider extends ContentProvider {
         }
     }
 
-    private static final String[] columns = new String[] { "position", "name", "movesTaken" };
+    private static final String[] columns = new String[] {"_id", "position", "name", "movesTaken" };
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -104,7 +104,7 @@ public class HighScoreProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        RequestType requestType = RequestType.values()[uriMatcher.match(uri)]; //// TODO: 13.01.17 check if not null
+            RequestType requestType = RequestType.values()[uriMatcher.match(uri)]; //// TODO: 13.01.17 check if not null
         HighScore[] highScores = null;
         switch (requestType) {
             case ALL:
@@ -122,9 +122,10 @@ public class HighScoreProvider extends ContentProvider {
 
         MatrixCursor matrixCursor = new MatrixCursor(columns);
         if (highScores != null) {
-            for(HighScore highScore : highScores)
-                matrixCursor.addRow(new Object[]{highScore.getPosition(),
-                        highScore.getName(), highScore.getMovesTaken()});
+            for (int i = 0; i < highScores.length; i++) {
+                matrixCursor.addRow(new Object[]{i, highScores[i].getPosition(),
+                        highScores[i].getName(), highScores[i].getMovesTaken()});
+            }
         }
 
         return matrixCursor;

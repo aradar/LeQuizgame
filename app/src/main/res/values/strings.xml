@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Le Quizgame</string>
     <string name="button_game_test_start">Start Game Test</string>
+    <string name="button_show_highscore">Show Highscore</string>
 </resources>
