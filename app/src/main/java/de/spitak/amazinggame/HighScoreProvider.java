@@ -36,7 +36,7 @@ public class HighScoreProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     private static final UriMatcher uriMatcher;
-    public static final String SERVER_URL = "http://141.45.206.169:4567/";//"http://192.168.0.17:4567/";
+    public static final String SERVER_URL = /*"http://141.45.206.169:4567/";*/"http://192.168.0.17:4567/";/**/
 
     private enum RequestType {
         ALL("all", SERVER_URL + "all"), TOP("top/#", SERVER_URL + "top/"),

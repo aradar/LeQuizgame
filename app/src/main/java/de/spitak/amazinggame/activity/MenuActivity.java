@@ -1,6 +1,9 @@
 package de.spitak.amazinggame.activity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +16,16 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Cursor c = getContentResolver().query(Uri
+                        .parse("content://de.spitak.amazinggame.HighScoreProvider/top/5")
+                        ,null,null,null,null);
+            }
+        }).start();
+
     }
 
     private void startActivity(Class type) {

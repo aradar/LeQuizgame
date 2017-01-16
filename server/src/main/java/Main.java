@@ -2,6 +2,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -10,26 +13,23 @@ import static spark.Spark.*;
  */
 public class Main {
 
-    public static class HighScoreEntity {
-        public int position;
-        public String name;
-        public int movesTaken;
+    private static List<HighScore> highScores;
+
+    private static void sort() {
+        highScores.sort(Comparator.comparingInt(h -> h.movesTaken));
+        for (int i = 0; i < highScores.size(); i++) {
+            highScores.get(i).position = i+1;
+        }
     }
 
-    public static String getHighScoreEntities(int number) {
-        HighScoreEntity[] highScoreEntities = new HighScoreEntity[number];
-        for (int i = 0; i < highScoreEntities.length; i++) {
-            HighScoreEntity highScoreEntity = new HighScoreEntity();
-            highScoreEntity.position = i + 1;
-            highScoreEntity.movesTaken = (int) (Math.random() * 20);
-            highScoreEntity.name = "Hasso";
-            highScoreEntities[i] = highScoreEntity;
-        }
-
-        return new Gson().toJson(highScoreEntities);
+    private static String getHighScoreEntities(int number) {
+        return new Gson().toJson(highScores.subList(0,number).toArray());
     }
 
     public static void main(String[] args) {
+
+        highScores = new ArrayList<>();
+
         get("/top/:number", (req, res) -> {
             int number = Integer.valueOf(req.params(":number"));
             res.type("application/json");
@@ -42,19 +42,34 @@ public class Main {
         });
         get("/name/:name", (req, res) -> {
             res.type("application/json");
-
             String name = req.params(":name");
-            HighScoreEntity highScoreEntity = new HighScoreEntity();
-            highScoreEntity.position = (int) (Math.random() * 10);
-            highScoreEntity.movesTaken = (int) (Math.random() * 20);
-            highScoreEntity.name = name;
+            HighScore highScore = new HighScore();
+            highScore.position = (int) (Math.random() * 10);
+            highScore.movesTaken = (int) (Math.random() * 20);
+            highScore.name = name;
 
-            return new Gson().toJson(highScoreEntity);
+            return new Gson().toJson(highScore);
         });
         put("/add", (req, res) -> {
-            System.out.printf("[%s] %s : %s%n", LocalDateTime.now(),req.contentType(), req.body());
-            return "{successss:false}";
+            sort();
+            try {
+                HighScore highScore = new Gson().fromJson(req.body(),HighScore.class);
+                highScores.add(highScore);
+                System.out.printf("[%s] %s : %s%n", LocalDateTime.now(),req.contentType(), req.body());
+                return "{success:true}";
+            } catch (com.google.gson.JsonSyntaxException ex) {
+                return "{success:false}";
+            }
         });
+    }
+
+    private static class HighScore {
+        int position;
+        String name;
+        int movesTaken;
+
+        HighScore() {
+        }
     }
 
 }
