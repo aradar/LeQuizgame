@@ -34,23 +34,8 @@ public class HighScoreProvider extends ContentProvider {
 
     public static final String URL = "content://" + AUTHORITY;
     public static final Uri CONTENT_URI = Uri.parse(URL);
-
+    public static final String SERVER_URL = "http://141.45.203.58:4567/";
     private static final UriMatcher uriMatcher;
-    public static final String SERVER_URL = /*"http://141.45.206.169:4567/";*/"http://192.168.0.10:4567/";/**/
-
-    private enum RequestType {
-        ALL("all", SERVER_URL + "all"), TOP("top/#", SERVER_URL + "top/"),
-        NAME("name/*", SERVER_URL + "name/"), ADD("add", SERVER_URL + "add");
-
-        private String cpPath;
-        private String webURL;
-
-        RequestType(String cpPath, String webURL) {
-            this.cpPath = cpPath;
-            this.webURL = webURL;
-        }
-    }
-
     private static final String[] columns = new String[] {"_id", "position", "name", "movesTaken" };
 
     static {
@@ -177,5 +162,18 @@ public class HighScoreProvider extends ContentProvider {
         }
 
         return response.getBoolean("success");
+    }
+
+    private enum RequestType {
+        ALL("all", SERVER_URL + "all"), TOP("top/#", SERVER_URL + "top/"),
+        NAME("name/*", SERVER_URL + "name/"), ADD("add", SERVER_URL + "add");
+
+        private String cpPath;
+        private String webURL;
+
+        RequestType(String cpPath, String webURL) {
+            this.cpPath = cpPath;
+            this.webURL = webURL;
+        }
     }
 }

@@ -2,10 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static spark.Spark.*;
 
@@ -27,9 +24,25 @@ public class Main {
         return new Gson().toJson(highScores.subList(0,number).toArray());
     }
 
+    public static HighScore[] getHighScoreDummyEntities(int number) {
+                HighScore[] highScoreEntities = new HighScore[number];
+                for (int i = 0; i < highScoreEntities.length; i++) {
+                        HighScore highScoreEntity = new HighScore();
+                        highScoreEntity.position = i + 1;
+                        highScoreEntity.movesTaken = (int) (Math.random() * 20);
+                        highScoreEntity.name = "Hasso" + i;
+                        highScoreEntities[i] = highScoreEntity;
+                    }
+
+                return highScoreEntities;
+            }
+
     public static void main(String[] args) {
 
         highScores = new ArrayList<>();
+        // dump demo data
+        highScores.addAll(Arrays.asList(getHighScoreDummyEntities(1000)));
+        sort();
 
         get("/top/:number", (req, res) -> {
             int number = Integer.valueOf(req.params(":number"));
