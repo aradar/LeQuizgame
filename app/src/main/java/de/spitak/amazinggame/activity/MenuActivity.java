@@ -3,6 +3,7 @@ package de.spitak.amazinggame.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickGameStart(View view)
     {
-        if (!Objects.equals(realm.where(Settings.class).findFirst().getName(), ""))
+        if (!realm.where(Settings.class).findFirst().getName().isEmpty())
             startActivity(GameActivity.class);
         else {
             Toast.makeText(this, R.string.insert_name, Toast.LENGTH_SHORT).show();
