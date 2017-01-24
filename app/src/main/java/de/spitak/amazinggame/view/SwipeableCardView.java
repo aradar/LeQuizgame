@@ -162,8 +162,11 @@ public class SwipeableCardView extends CardView {
 
             if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.LEFT)) {
                 rightHintTextView.setVisibility(VISIBLE);
+                leftHintTextView.setVisibility(INVISIBLE);
+
             } else if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.RIGHT)) {
                 leftHintTextView.setVisibility(VISIBLE);
+                rightHintTextView.setVisibility(INVISIBLE);
             }
         }
 
