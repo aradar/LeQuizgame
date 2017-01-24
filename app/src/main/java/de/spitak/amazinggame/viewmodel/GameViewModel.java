@@ -3,7 +3,9 @@ package de.spitak.amazinggame.viewmodel;
 import android.content.ContentValues;
 import android.databinding.BaseObservable;
 import android.net.Uri;
+import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;

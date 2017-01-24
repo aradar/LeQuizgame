@@ -1,5 +1,8 @@
 package de.spitak.amazinggame.model;
 
+import android.view.Menu;
+import android.widget.Toast;
+
 import java.util.Arrays;
 
 import de.spitak.amazinggame.activity.MenuActivity;
@@ -82,7 +85,7 @@ public class Game extends RealmObject {
         return currentOption;
     }
 
-    public void setCurrentOption(Option currentOption) {
+    private void setCurrentOption(Option currentOption) {
         this.currentOption = currentOption;
     }
 
@@ -95,8 +98,8 @@ public class Game extends RealmObject {
     }
 
     private void takeOption(Option option) {
-        if (option != null && requirementsMet(option.getRequirements())) {
-            currentOption = currentOption.getRight();
+        if (option != null && requirementsMet(currentOption.getRight().getRequirements())) {
+            currentOption = option;
         }
     }
 
@@ -114,7 +117,7 @@ public class Game extends RealmObject {
 
     public void takeParentOption() {
         if (currentOption.getParent() != null && !currentOption.isBackstepBlocked())
-            currentOption = currentOption.getParent();
+            takeOption(currentOption.getParent());
     }
 
     public RealmList<Item> getInventory() {
@@ -140,98 +143,46 @@ public class Game extends RealmObject {
         realm.beginTransaction();
         Game game = realm.createObject(Game.class);
         game.setName("Cheers!");
-        game.setDescription("Dein Schädel brummt wie Sau. " +
-                "Du befindest dich in ... ja wo befindest" +
-                "du dich eigentlich? Versuche herauszufinden, " +
-                "wo du bist und was passiert ist. In deinem" +
-                "Besitz befindet sich eine Ananas.");
+        game.setDescription("A simple game about drunk people and where to find them.");
         /*Item
         game.addItem()
 */
-        Option head = realm.createObject(Option.class);
-        head.setTitle("kopf");
-        head.setDescription("ich bin ein kopf");
-        Option left = realm.createObject(Option.class);
-        left.setTitle("links");
-        left.setDescription("ich bin ein fuss");
-        left.setHint("hihi ich bin ein linker hint");
-        Option right = realm.createObject(Option.class);
-        right.setTitle("rechts");
-        right.setDescription("ich bin ein fuss");
-        right.setHint("hihi ich bin ein rechter hint");
-        Option leftLeft = realm.createObject(Option.class);
-        leftLeft.setTitle("linkslinks");
-        leftLeft.setDescription("ich bin ein fuss");
-        Option leftRight = realm.createObject(Option.class);
-        leftRight.setTitle("linksrechts");
-        leftRight.setDescription("ich bin ein fuss");
-        Option rightLeft = realm.createObject(Option.class);
-        rightLeft.setTitle("rechtslinks");
-        rightLeft.setDescription("ich bin ein fuss");
-        Option rightRight = realm.createObject(Option.class);
-        rightRight.setTitle("rechtsrechts");
-        rightRight.setDescription("ich bin ein fuss");
-        Option leftLeftEnd = realm.createObject(Option.class);
-        leftLeftEnd.setTitle("linkslinks ende");
-        leftLeftEnd.setBackstepBlocked(true);
-        leftLeftEnd.setDescription("DAS ENDE");
-        leftLeftEnd.setCompleted(true);
-        Option leftRightEnd = realm.createObject(Option.class);
-        leftRightEnd.setTitle("linksrechts ende");
-        leftRightEnd.setBackstepBlocked(true);
-        leftRightEnd.setDescription("DAS ENDE");
-        leftRightEnd.setCompleted(true);
-        Option rightLeftEnd = realm.createObject(Option.class);
-        rightLeftEnd.setTitle("rechtslinks ende");
-        rightLeftEnd.setBackstepBlocked(true);
-        rightLeftEnd.setDescription("DAS ENDE");
-        rightLeftEnd.setCompleted(true);
-        Option rightRightEnd = realm.createObject(Option.class);
-        rightRightEnd.setTitle("rechtsrechts ende");
-        rightRightEnd.setBackstepBlocked(true);
-        rightRightEnd.setCompleted(true);
-        rightRightEnd.setDescription("DAS ENDE");
+        Option start = realm.createObject(Option.class);
+        start.setTitle("Cheers!");
+        start.setDescription("Dein Schädel brummt wie Sau. Du befindest dich in… ja wo " +
+                "befindest du dich eigentlich? Das sieht aus wie das Innere eines Schrankes. " +
+                "Versuche herauszufinden, was passiert ist. Was ist dein nächster Schritt?");
+        Option escapeCloset = realm.createObject(Option.class);
+        escapeCloset.setTitle("Der Raum");
+        escapeCloset.setDescription("\n" +
+                "Na das bringt doch schon etwas Licht ins dunkel! " +
+                "Du bist in einem Zimmer. Erkennen kannst du trotzdem kaum etwas" +
+                ", da das Licht aus ist. Du gehst erstmal zum Lichtschalter und betätigst ihn. " +
+                "Es bleibt dunkel. Wahrscheinlich defekt. Am anderen Ende des Zimmers siehst du " +
+                "einen Schreibtisch auf dem ein Bildschirm diesen beleuchtet. " +
+                "Was möchtest du tun?");
+        escapeCloset.setHint("gehe aus Schrank");
+        Option stayInCloset = realm.createObject(Option.class);
+        stayInCloset.setTitle("Erstmal eine Runde chillen");
+        stayInCloset.setDescription("Um auf den ganzen Schwachsinn ersteinmal klar zu kommen," +
+                "entschließt du dich noch ein paar Minuten im Schrank zu verweilen. Ist ja " +
+                "auch gemütlich hier zwischen den ganzen Kleidungsstücken.");
+        stayInCloset.setHint("chille im Schrank");
+        start.setLeft(escapeCloset);
+        start.setRight(stayInCloset);
 
-        head.setLeft(left);
-        head.setRight(right);
+        escapeCloset.setParent(start);
+        stayInCloset.setParent(start);
+        escapeCloset.setBackstepBlocked(true);
+        stayInCloset.setBackstepBlocked(true);
 
-        left.setParent(head);
-        left.setLeft(leftLeft);
-        leftLeft.setParent(left);
-        leftLeft.setLeft(leftLeftEnd);
-        leftLeft.setRight(leftLeftEnd);
-        leftLeftEnd.setParent(leftLeft);
-        left.setRight(leftRight);
-        leftRight.setParent(left);
-        leftRight.setLeft(leftRightEnd);
-        leftRight.setRight(leftRightEnd);
-        leftRightEnd.setParent(leftRight);
+        game.getOptions().addAll(
+                Arrays.asList(
+                        start,
+                        escapeCloset,
+                        stayInCloset));
 
-        right.setParent(head);
-        right.setLeft(rightLeft);
-        rightLeft.setParent(right);
-        rightLeft.setLeft(leftRightEnd);
-        rightLeft.setRight(leftRightEnd);
-        leftRightEnd.setParent(rightLeft);
-        rightRight.setParent(rightLeft);
-        right.setRight(rightRight);
-        rightRight.setParent(right);
-        rightRight.setLeft(rightRightEnd);
-        rightRight.setRight(rightRightEnd);
-
-        game.getOptions()
-                .addAll(Arrays.asList(head,
-                        left,
-                        right,
-                        leftLeft,
-                        leftLeftEnd,
-                        leftRight,
-                        leftRightEnd,
-                        rightLeft,
-                        rightLeftEnd,
-                        rightRight,
-                        rightRightEnd));
-        game.setCurrentOption(head);
+        game.setCurrentOption(start);
 
         realm.commitTransaction();
         //return realm.where(Game.class).findFirst();
