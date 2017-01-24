@@ -1,6 +1,5 @@
 package de.spitak.amazinggame.viewmodel;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.databinding.BaseObservable;
 import android.net.Uri;
@@ -67,6 +66,7 @@ public class GameViewModel extends BaseObservable {
 
                         game.setCompleted(true);
 
+                        // TODO: 1/24/17 oh no just a new thread
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
