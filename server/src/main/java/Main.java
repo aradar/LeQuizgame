@@ -24,29 +24,29 @@ public class Main {
         return new Gson().toJson(highScores.subList(0,number).toArray());
     }
 
-    public static HighScore[] getHighScoreDummyEntities(int number) {
-                HighScore[] highScoreEntities = new HighScore[number];
-                for (int i = 0; i < highScoreEntities.length; i++) {
-                        HighScore highScoreEntity = new HighScore();
-                        highScoreEntity.position = i + 1;
-                        highScoreEntity.movesTaken = (int) (Math.random() * 20);
-                        highScoreEntity.name = "Hasso" + i;
-                        highScoreEntities[i] = highScoreEntity;
-                    }
+    private static HighScore[] getHighScoreDummyEntities(int number) {
+        HighScore[] highScoreEntities = new HighScore[number];
+        for (int i = 0; i < highScoreEntities.length; i++) {
+            HighScore highScoreEntity = new HighScore();
+            highScoreEntity.position = i + 1;
+            highScoreEntity.movesTaken = (int) (Math.random() * 20);
+            highScoreEntity.name = "Hasso" + i;
+            highScoreEntities[i] = highScoreEntity;
+        }
 
-                return highScoreEntities;
-            }
+        return highScoreEntities;
+    }
 
     public static void main(String[] args) {
 
         highScores = new ArrayList<>();
-        // dump demo data
-        highScores.addAll(Arrays.asList(getHighScoreDummyEntities(1000)));
-        sort();
 
         get("/top/:number", (req, res) -> {
             int number = Integer.valueOf(req.params(":number"));
             res.type("application/json");
+            if (number > highScores.size())
+                number = highScores.size();
+
             return getHighScoreEntities(number);
         });
 
@@ -63,6 +63,19 @@ public class Main {
             highScore.name = name;
 
             return new Gson().toJson(highScore);
+        });
+        get("/dummy/:number", (req, res) -> {
+            res.type("application/json");
+            int number = Integer.valueOf(req.params(":number"));
+            // dump demo data
+            highScores.addAll(Arrays.asList(getHighScoreDummyEntities(number)));
+            sort();
+            return new Gson().toJson("{success:true}");
+        });
+        get("/remove", (req, res) -> {
+            res.type("application/json");
+            highScores.clear();
+            return new Gson().toJson("{success:true}");
         });
         put("/add", (req, res) -> {
             try {
