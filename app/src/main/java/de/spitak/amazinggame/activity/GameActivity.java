@@ -9,7 +9,6 @@ import java.util.Arrays;
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.databinding.ActivityGameBinding;
 import de.spitak.amazinggame.model.Game;
-import de.spitak.amazinggame.model.Item;
 import de.spitak.amazinggame.model.Option;
 import de.spitak.amazinggame.view.SwipeableCardView;
 import de.spitak.amazinggame.viewmodel.GameViewModel;
@@ -71,9 +70,11 @@ public class GameActivity extends AppCompatActivity {
         Option left = realm.createObject(Option.class);
         left.setTitle("links");
         left.setDescription("ich bin ein fuss");
+        left.setHint("hihi ich bin ein linker hint");
         Option right = realm.createObject(Option.class);
         right.setTitle("rechts");
         right.setDescription("ich bin ein fuss");
+        right.setHint("hihi ich bin ein rechter hint");
         Option leftLeft = realm.createObject(Option.class);
         leftLeft.setTitle("linkslinks");
         leftLeft.setDescription("ich bin ein fuss");
@@ -139,13 +140,18 @@ public class GameActivity extends AppCompatActivity {
                         left,
                         right,
                         leftLeft,
+                        leftLeftEnd,
                         leftRight,
+                        leftRightEnd,
                         rightLeft,
-                        rightRight));
+                        rightLeftEnd,
+                        rightRight,
+                        rightRightEnd));
         game.setCurrentOption(head);
 
         realm.commitTransaction();
-        return realm.where(Game.class).findFirst();
+        //return realm.where(Game.class).findFirst();
+        return game;
     }
 
     @Override
