@@ -34,8 +34,8 @@ public class OptionViewModel extends BaseObservable {
         return option.getTitle();
     }
 
-    public List<Item> getDrops() {
-        return option.getDrops();
+    public List<Item> getLoot() {
+        return option.getLoot();
     }
 
     public String getImage() {

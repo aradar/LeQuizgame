@@ -9,3 +9,4 @@ app/build
 /build
 /captures
 .externalNativeBuild
+/server/target

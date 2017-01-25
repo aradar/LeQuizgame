@@ -5,7 +5,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.util.Display;
@@ -21,6 +21,9 @@ public class SwipeableCardView extends CardView {
     private SwipeDetector swipeDetector;
     private SwipeAnimationHelper animationHelper;
     private OnSwipeListener onSwipeListener;
+
+    private TextView leftHintTextView;
+    private TextView rightHintTextView;
 
     {
         displayMetrics = Display.getDisplayMetrics(getContext());
@@ -42,6 +45,9 @@ public class SwipeableCardView extends CardView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
+        leftHintTextView = (TextView) findViewById(R.id.room_card_lefthint);
+        rightHintTextView = (TextView) findViewById(R.id.room_card_righthint);
+
         if (swipeDetector == null) {
             swipeDetector = new SwipeDetector(getContext(), left, top);
             swipeDetector.setOnSwipeListener(new SwipeListener());
@@ -50,6 +56,47 @@ public class SwipeableCardView extends CardView {
             animationHelper = new SwipeAnimationHelper(this, left, top);
         }
     }
+
+    public void leftSwipeOut(Runnable runnable) {
+        animationHelper.leftSwipeOut(runnable);
+    }
+
+    public void rightSwipeOut(Runnable runnable) {
+        animationHelper.rightSwipeOut(runnable);
+    }
+
+    public void topSwipeOut(Runnable runnable) {
+        animationHelper.topSwipeOut(runnable);
+    }
+
+    public void bottomSwipeOut(Runnable runnable) {
+        animationHelper.bottomSwipeOut(runnable);
+    }
+
+    public void leftSwipeIn(Runnable runnable) {
+        animationHelper.leftSwipeIn(runnable);
+    }
+
+    public void rightSwipeIn(Runnable runnable) {
+        animationHelper.rightSwipeIn(runnable);
+    }
+
+    public void topSwipeIn(Runnable runnable) {
+        animationHelper.topSwipeIn(runnable);
+    }
+
+    public void bottomSwipeIn(Runnable runnable) {
+        animationHelper.bottomSwipeIn(runnable);
+    }
+
+    public void appearInCenter(Runnable runnable) {
+        animationHelper.appearInCenter(runnable);
+    }
+
+    public void resetToCenter(Runnable runnable) {
+        animationHelper.resetToCenter(runnable);
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -91,32 +138,31 @@ public class SwipeableCardView extends CardView {
                     @Override
                     public void run() {
                         swipeDetector.resetCoordinates();
+                        leftHintTextView.setVisibility(INVISIBLE);
+                        rightHintTextView.setVisibility(INVISIBLE);
                         onSwipeListener.onSwipe(new OnSwipeListener.SwipeEvent(swipeEvent.getSwipeDirection()));
                         animationHelper.bottomSwipeIn(null);
-                        // temp
-                        ImageView imageView = (ImageView) findViewById(R.id.room_card_image);
-                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1));
-                        // temp
-
                     }
                 });
 
             } else {
                 swipeDetector.resetCoordinates();
                 animationHelper.resetToCenter(null);
+                leftHintTextView.setVisibility(INVISIBLE);
+                rightHintTextView.setVisibility(INVISIBLE);
             }
         }
 
         @Override
         public void onSwipePossible(SwipeEvent swipeEvent) {
-            // temp
-            ImageView imageView = (ImageView) findViewById(R.id.room_card_image);
-            if (swipeEvent.getSwipeDirection() != SwipeDetector.SwipeDirection.NONE) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1_open));
-            } else {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.door1));
+            if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.LEFT)) {
+                rightHintTextView.setVisibility(VISIBLE);
+                leftHintTextView.setVisibility(INVISIBLE);
+
+            } else if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.RIGHT)) {
+                leftHintTextView.setVisibility(VISIBLE);
+                rightHintTextView.setVisibility(INVISIBLE);
             }
-            // temp
         }
 
         @Override

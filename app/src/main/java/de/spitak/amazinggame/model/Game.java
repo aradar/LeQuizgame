@@ -1,83 +1,166 @@
 package de.spitak.amazinggame.model;
 
-import de.spitak.amazinggame.db.base.Entity;
+import android.widget.Toast;
+
+import java.util.Arrays;
+
+import de.spitak.amazinggame.R;
+import de.spitak.amazinggame.activity.MenuActivity;
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by rschlett on 10/28/16.
  */
 
-public class Game implements Entity {
-    private Option currentOption;
-    private long id;
+public class Game extends RealmObject {
+
     private String name;
     private String description;
     private String image;
+    private RealmList<Option> options;
+    private RealmList<Item> inventory;
 
-    public Game(String name, String description, String image) {
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        createTestOption();
+    @Ignore
+    private boolean completed;
+
+    // TODO: 1/16/17 can be changed later
+    @Ignore
+    private int movesTaken;
+
+    @Ignore
+    private Option currentOption;
+
+    static {
+        Realm.init(MenuActivity.getAppContext());
     }
 
-    public Game(int id, String name, String description, String image) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-    }
-
-    @Override
-    public long getId() {
-        return id;
+    public Game() {
+        options = new RealmList<>();
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImage() {
         return image;
     }
 
-    public void takeLeftOption() {
-        if (currentOption.getLeft() != null) {
-            currentOption = currentOption.getLeft();
-        }
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void takeRightOption() {
-        if (currentOption.getRight() != null) {
-            currentOption = currentOption.getRight();
-        }
+    public RealmList<Option> getOptions() {
+        return options;
     }
 
-    public void takeParentOption() { currentOption = currentOption.getParent(); }
+    public void setOptions(RealmList<Option> options) {
+        this.options = options;
+    }
+
+    public int getMovesTaken() {
+        return movesTaken;
+    }
+
+    public void setMovesTaken(int movesTaken) {
+        this.movesTaken = movesTaken;
+    }
 
     public Option getCurrentOption() {
+        if (currentOption == null) {
+            currentOption = options.first();
+        }
+
         return currentOption;
     }
 
-    private void createTestOption() {
-        currentOption = new Option("Test", "Test 2000", "");
+    public void setCurrentOption(Option currentOption) {
+        this.currentOption = currentOption;
+    }
 
-        currentOption.setLeft(new Option("Kuh",
-                "Macht muh",
-                "finde die Kuh",
-                null,
-                currentOption,
-                null,
-                null));
-        currentOption.setRight(new Option("Hund",
-                "oihrwqwoih",
-                "was macht der Hund",
-                null,
-                currentOption,
-                null,
-                null));
+    public void takeLeftOption() {
+        takeOption(currentOption.getLeft());
+    }
+
+    public void takeRightOption() {
+        takeOption(currentOption.getRight());
+    }
+
+    private void takeOption(Option option) {
+        if (option != null && requirementsMet(option.getRequirements())) {
+            currentOption = option;
+            collectLoot();
+        }
+    }
+
+    private void collectLoot() {
+        if (currentOption.getLoot() != null) {
+            Realm realm = Realm.getDefaultInstance();
+            for (Item item : currentOption.getLoot()) {
+                if (!inventory.contains(item)) {
+                    realm.beginTransaction();
+                    inventory.add(item);
+                    // Todo ugly!
+                    Toast.makeText(MenuActivity.getAppContext(), String.format("Du hast %s " +
+                                    "aufgesammelt.", item.getName()),
+                            Toast.LENGTH_SHORT).show();
+                    realm.commitTransaction();
+                }
+            }
+        }
+    }
+
+    private boolean requirementsMet(RealmList<Item> requirements) {
+        if (requirements != null) {
+            for (Item requirement : requirements) {
+                if (!inventory.contains(requirement)) {
+
+                    // Todo ugly!
+                    Toast.makeText(MenuActivity.getAppContext(), String.format("Du benötigst %s " +
+                            "um weiter zu kommen.", requirement.getName()),
+                            Toast.LENGTH_SHORT).show();
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public void takeParentOption() {
+        if (currentOption.getParent() != null && !currentOption.isBackstepBlocked())
+            takeOption(currentOption.getParent());
+    }
+
+    public RealmList<Item> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(RealmList<Item> inventory) {
+        this.inventory = inventory;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

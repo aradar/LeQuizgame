@@ -1,18 +1,36 @@
 package de.spitak.amazinggame.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 import de.spitak.amazinggame.R;
+import de.spitak.amazinggame.model.Settings;
+import io.realm.Realm;
 
 public class MenuActivity extends AppCompatActivity {
+
+    private static Context appContext;
+    private Realm realm;
+
+    public static Context getAppContext() {
+        return appContext;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu);
+        appContext = getApplicationContext();
+        Realm.init(MenuActivity.getAppContext());
+        realm = Realm.getDefaultInstance();
+
     }
 
     private void startActivity(Class type) {
@@ -22,6 +40,21 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickGameStart(View view)
     {
-        startActivity(GameActivity.class);
+        if (!realm.where(Settings.class).findFirst().getName().isEmpty())
+            startActivity(GameActivity.class);
+        else {
+            Toast.makeText(this, R.string.insert_name, Toast.LENGTH_SHORT).show();
+            onClickShowSettings(null);
+        }
+
+    }
+
+    public void onClickShowHighscore(View view)
+    {
+        startActivity(HighscoreActivity.class);
+    }
+
+    public void onClickShowSettings(View view) {
+        startActivity(SettingsActivity.class);
     }
 }

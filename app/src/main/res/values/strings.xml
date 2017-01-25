@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">Le Quizgame</string>
-    <string name="button_game_test_start">Start Game Test</string>
+    <string name="app_name">2 many choices</string>
+    <string name="button_game_test_start">Spiel starten</string>
+    <string name="button_show_highscore">Highscore anzeigen</string>
+    <string name="settings_name">Name eingeben …</string>
+    <string name="button_show_settings">Einstellungen</string>
+    <string name="insert_name">Bitte zuerst Name festlegen.</string>
+    <string name="highscore">Highscore</string>
+    <string name="action_done">Fertig</string>
 </resources>

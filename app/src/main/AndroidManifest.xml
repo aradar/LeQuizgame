@@ -3,6 +3,8 @@
           package="de.spitak.amazinggame"
     >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,24 +12,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".activity.ContentActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.ContentActivity"/>
         <activity
             android:name=".activity.GameActivity"
             android:theme="@style/NoBar"
-            >
-        </activity>
+            />
         <activity android:name=".activity.MenuActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <provider
-            android:name=".SomethingSomethingProvider"
-            android:authorities="de.spitak.amazinggame.SomethingSomethingProvider"
+            android:name=".HighScoreProvider"
+            android:authorities="de.spitak.amazinggame.HighScoreProvider"
+            android:enabled="true"
+            android:exported="true"
             />
+
+        <activity android:name=".activity.HighscoreActivity" android:label="@string/highscore"/>
+        <activity android:name=".activity.SettingsActivity" android:label="@string/button_show_settings">
+        </activity>
     </application>
 
 </manifest>
