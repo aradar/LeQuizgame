@@ -1,5 +1,7 @@
 package de.spitak.amazinggame.model;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.widget.Toast;
 
 import java.util.Arrays;
@@ -24,6 +26,16 @@ public class Game extends RealmObject {
     private RealmList<Item> inventory;
 
     @Ignore
+    private Vibrator v;
+
+    // Start without a delay
+    // Vibrate for 100 milliseconds
+    // Sleep for 1000 milliseconds
+    @Ignore
+    private long[] vibrationPattern = {0, 200, 200, 200, 200};
+
+
+    @Ignore
     private boolean completed;
 
     // TODO: 1/16/17 can be changed later
@@ -39,6 +51,7 @@ public class Game extends RealmObject {
 
     public Game() {
         options = new RealmList<>();
+        v = (Vibrator) MenuActivity.getAppContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public String getName() {
@@ -120,6 +133,7 @@ public class Game extends RealmObject {
                                     "aufgesammelt.", item.getName()),
                             Toast.LENGTH_SHORT).show();
                     realm.commitTransaction();
+                    v.vibrate(500);
                 }
             }
         }
@@ -135,6 +149,7 @@ public class Game extends RealmObject {
                             "um weiter zu kommen.", requirement.getName()),
                             Toast.LENGTH_SHORT).show();
 
+                    v.vibrate(vibrationPattern, -1);
                     return false;
                 }
             }
