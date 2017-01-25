@@ -13,6 +13,7 @@ import java.util.Objects;
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.model.Settings;
 import io.realm.Realm;
+import io.realm.RealmObject;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -40,11 +41,15 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickGameStart(View view)
     {
-        if (!realm.where(Settings.class).findFirst().getName().isEmpty())
+        Settings realmObject = realm.where(Settings.class).findFirst();
+
+        if (realmObject != null &&
+                realmObject.getName() != null &&
+        !realmObject.getName().isEmpty())
             startActivity(GameActivity.class);
         else {
             Toast.makeText(this, R.string.insert_name, Toast.LENGTH_SHORT).show();
-            onClickShowSettings(null);
+            startActivity(SettingsActivity.class);
         }
 
     }
