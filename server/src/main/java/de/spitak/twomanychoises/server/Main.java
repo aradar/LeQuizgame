@@ -1,5 +1,6 @@
+package de.spitak.twomanychoises.server;
+
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.time.LocalDateTime;
 import java.util.*;
