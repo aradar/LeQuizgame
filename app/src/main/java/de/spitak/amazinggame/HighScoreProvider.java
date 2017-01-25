@@ -34,7 +34,7 @@ public class HighScoreProvider extends ContentProvider {
 
     public static final String URL = "content://" + AUTHORITY;
     public static final Uri CONTENT_URI = Uri.parse(URL);
-    public static final String SERVER_URL = "http://141.45.203.58:4567/";
+    public static final String SERVER_URL = "http://144.76.252.196:45136/";
     private static final UriMatcher uriMatcher;
     private static final String[] columns = new String[] {"_id", "position", "name", "movesTaken" };
 
