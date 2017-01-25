@@ -45,6 +45,9 @@ public class SwipeableCardView extends CardView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
+        leftHintTextView = (TextView) findViewById(R.id.room_card_lefthint);
+        rightHintTextView = (TextView) findViewById(R.id.room_card_righthint);
+
         if (swipeDetector == null) {
             swipeDetector = new SwipeDetector(getContext(), left, top);
             swipeDetector.setOnSwipeListener(new SwipeListener());
@@ -152,14 +155,6 @@ public class SwipeableCardView extends CardView {
 
         @Override
         public void onSwipePossible(SwipeEvent swipeEvent) {
-            // TODO: 1/24/17 this code is fugly
-            if (leftHintTextView == null) {
-                leftHintTextView = (TextView) findViewById(R.id.room_card_lefthint);
-            }
-            if (rightHintTextView == null) {
-                rightHintTextView = (TextView) findViewById(R.id.room_card_righthint);
-            }
-
             if (swipeEvent.getSwipeDirection().equals(SwipeDetector.SwipeDirection.LEFT)) {
                 rightHintTextView.setVisibility(VISIBLE);
                 leftHintTextView.setVisibility(INVISIBLE);

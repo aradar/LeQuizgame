@@ -1,10 +1,10 @@
 package de.spitak.amazinggame.model;
 
-import android.view.Menu;
 import android.widget.Toast;
 
 import java.util.Arrays;
 
+import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.activity.MenuActivity;
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -32,6 +32,10 @@ public class Game extends RealmObject {
 
     @Ignore
     private Option currentOption;
+
+    static {
+        Realm.init(MenuActivity.getAppContext());
+    }
 
     public Game() {
         options = new RealmList<>();
@@ -85,7 +89,7 @@ public class Game extends RealmObject {
         return currentOption;
     }
 
-    private void setCurrentOption(Option currentOption) {
+    public void setCurrentOption(Option currentOption) {
         this.currentOption = currentOption;
     }
 
@@ -98,8 +102,26 @@ public class Game extends RealmObject {
     }
 
     private void takeOption(Option option) {
-        if (option != null && requirementsMet(currentOption.getRight().getRequirements())) {
+        if (option != null && requirementsMet(option.getRequirements())) {
             currentOption = option;
+            collectLoot();
+        }
+    }
+
+    private void collectLoot() {
+        if (currentOption.getLoot() != null) {
+            Realm realm = Realm.getDefaultInstance();
+            for (Item item : currentOption.getLoot()) {
+                if (!inventory.contains(item)) {
+                    realm.beginTransaction();
+                    inventory.add(item);
+                    // Todo ugly!
+                    Toast.makeText(MenuActivity.getAppContext(), String.format("Du hast %s " +
+                                    "aufgesammelt.", item.getName()),
+                            Toast.LENGTH_SHORT).show();
+                    realm.commitTransaction();
+                }
+            }
         }
     }
 
@@ -107,6 +129,12 @@ public class Game extends RealmObject {
         if (requirements != null) {
             for (Item requirement : requirements) {
                 if (!inventory.contains(requirement)) {
+
+                    // Todo ugly!
+                    Toast.makeText(MenuActivity.getAppContext(), String.format("Du benötigst %s " +
+                            "um weiter zu kommen.", requirement.getName()),
+                            Toast.LENGTH_SHORT).show();
+
                     return false;
                 }
             }
@@ -134,58 +162,5 @@ public class Game extends RealmObject {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
-    }
-
-    public static Game createCustomGame() {
-        Realm.init(MenuActivity.getAppContext());
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-        Game game = realm.createObject(Game.class);
-        game.setName("Cheers!");
-        game.setDescription("A simple game about drunk people and where to find them.");
-        /*Item
-        game.addItem()
-*/
-        Option start = realm.createObject(Option.class);
-        start.setTitle("Cheers!");
-        start.setDescription("Dein Schädel brummt wie Sau. Du befindest dich in… ja wo " +
-                "befindest du dich eigentlich? Das sieht aus wie das Innere eines Schrankes. " +
-                "Versuche herauszufinden, was passiert ist. Was ist dein nächster Schritt?");
-        Option escapeCloset = realm.createObject(Option.class);
-        escapeCloset.setTitle("Der Raum");
-        escapeCloset.setDescription("\n" +
-                "Na das bringt doch schon etwas Licht ins dunkel! " +
-                "Du bist in einem Zimmer. Erkennen kannst du trotzdem kaum etwas" +
-                ", da das Licht aus ist. Du gehst erstmal zum Lichtschalter und betätigst ihn. " +
-                "Es bleibt dunkel. Wahrscheinlich defekt. Am anderen Ende des Zimmers siehst du " +
-                "einen Schreibtisch auf dem ein Bildschirm diesen beleuchtet. " +
-                "Was möchtest du tun?");
-        escapeCloset.setHint("gehe aus Schrank");
-        Option stayInCloset = realm.createObject(Option.class);
-        stayInCloset.setTitle("Erstmal eine Runde chillen");
-        stayInCloset.setDescription("Um auf den ganzen Schwachsinn ersteinmal klar zu kommen," +
-                "entschließt du dich noch ein paar Minuten im Schrank zu verweilen. Ist ja " +
-                "auch gemütlich hier zwischen den ganzen Kleidungsstücken.");
-        stayInCloset.setHint("chille im Schrank");
-        start.setLeft(escapeCloset);
-        start.setRight(stayInCloset);
-
-        escapeCloset.setParent(start);
-        stayInCloset.setParent(start);
-        escapeCloset.setBackstepBlocked(true);
-        stayInCloset.setBackstepBlocked(true);
-
-        game.getOptions().addAll(
-                Arrays.asList(
-                        start,
-                        escapeCloset,
-                        stayInCloset));
-
-        game.setCurrentOption(start);
-
-        realm.commitTransaction();
-        //return realm.where(Game.class).findFirst();
-        return game;
     }
 }

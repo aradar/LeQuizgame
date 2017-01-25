@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Arrays;
 
+import de.spitak.amazinggame.DummyGameGenerator;
 import de.spitak.amazinggame.R;
 import de.spitak.amazinggame.databinding.ActivityGameBinding;
 import de.spitak.amazinggame.model.Game;
@@ -26,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
 
         activityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game);
 
-        gameViewModel = new GameViewModel(Game.createCustomGame());
+        gameViewModel = new GameViewModel(DummyGameGenerator.createCustomGame());
         activityGameBinding.setGame(gameViewModel);
 
         final SwipeableCardView card = (SwipeableCardView) findViewById(R.id.activity_game_card);
